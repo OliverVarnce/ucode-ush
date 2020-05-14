@@ -13,7 +13,7 @@ static void print_inside_apropos(int j, char **commands) {
 }
 
 static void error_one(t_envp *var) {
-        mx_printerr("usage: apropos keyword ...\n");
+        mx_printerror("usage: apropos keyword ...\n");
         mx_envp_replace(&var, "?=1");
 }
 

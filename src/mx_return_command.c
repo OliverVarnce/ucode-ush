@@ -13,7 +13,7 @@ void mx_return_command(t_envp *var, char **com) {
     int count = count_args(com);
     char *repl_return = NULL;
     if (count > 2)
-        mx_printerr("return: too many arguments\n");
+        mx_printerror("return: too many arguments\n");
     else if (com[1]) {
         if (mx_atoi(com[1]) != 0) {
             repl_return = mx_strjoin("?=", com[1]);

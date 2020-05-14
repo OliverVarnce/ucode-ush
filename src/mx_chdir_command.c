@@ -10,9 +10,9 @@ static int count_arg(char **com) {
 }
 
 static void printf_no_obj(char **com, t_envp *var) {
-    mx_printerr("chdir: no such file or directory: ");
-    mx_printerr(com[1]);
-    mx_printerr("\n");
+    mx_printerror("chdir: no such file or directory: ");
+    mx_printerror(com[1]);
+    mx_printerror("\n");
     mx_envp_replace(&var, "?=1");
 }
 
@@ -27,7 +27,7 @@ void mx_chdir_command(t_envp *var, char** com) {
     int count = count_arg(com);
 
     if (count > 2) {
-        mx_printerr("chdir: too many arguments\n");
+        mx_printerror("chdir: too many arguments\n");
         mx_envp_replace(&var, "?=1");
     }
     else {
