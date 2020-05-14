@@ -1,23 +1,22 @@
 #include "libmx.h"
 
-int mx_atoi(const char *str) {
-    int i = 0;
-    int sing = 1;
-    int res = 0;
+int mx_atoi(const char *s) {
+    int i = 0, digits = 0, number = 0;
+    int sign = 1;
+    unsigned long long power = 1;
 
-    while (mx_isspace(str[i])) {
+    for (; mx_isspace(s[i]); i++);
+
+    if (s[i] == '-') {
+        sign = -1;
         i++;
     }
-    if (str[i] == '-') {
-        sing = -1;
-        i++;
+
+    for (int j = i; mx_isdigit(s[j]); j++, digits++, power *= 10);
+
+    for (power = power / 10; power > 0; power /= 10, i++) {
+        number += (s[i] - 48) * power;
     }
-    else if (str[i] == '+') {
-        i++;
-    }
-    while (str[i] && !mx_isspace(str[i]) && mx_isdigit(str[i])) {
-        res = res * 10 + str[i] -'0';
-        i++;
-    }
-    return res * sing;
+
+    return sign * number;
 }

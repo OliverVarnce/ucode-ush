@@ -167,5 +167,6 @@ int mx_env_get_pos(char **com, t_envp *var);
 // void mx_signal_run(t_envp *var);
 // void mx_sighandler();
 // void mx_sighandler(int key, t_envp *var);
-
+void mx_printlist(t_list *list);
+void mx_printerror(const char *s);
 #endif

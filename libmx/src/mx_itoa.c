@@ -1,36 +1,24 @@
 #include "libmx.h"
 
-//according with auditor
-
-static int num_len(int number) {
-    unsigned int num = number;
-    int count;
-
-    count = num <= 0 ? 1 : 0;
-
-    while (num > 0) {
-        count++;
-        num = num / 10;
-    }
-    return count;
-}
 char *mx_itoa(int number) {
-    unsigned int num = number;
+    char buffer[12];
     int i = 0;
-    int sign;
-    int len;
-    char *str;
+    long num = number;
 
-    len = num_len(number);
-    str = mx_strnew(len);
-    if ((sign = num) < 0)
-        num = -num;
-    for (;i < len; i++) {
-        str[i] = num % 10 + '0';
-        num = num / 10;
+    if (number == 0)
+        return "0";
+
+    mx_memset(buffer, '\0', 12);
+
+    if (number < 0) {
+        buffer[i++] = '-';
+        num *= -1;
     }
-    if (sign < 0)
-        str[i++] = '-';
-    mx_str_reverse(str);
-    return str;
+    for (; num > 0; num /= 10)
+        buffer[i++] = num % 10 + 48;
+
+    for (int k = (number > 0 ? 0 : 1), j = i - 1; k < j; k++, j--)
+        mx_swap_char(&buffer[k], &buffer[j]);
+
+    return mx_strncpy(mx_strnew(i), buffer, i);
 }
