@@ -8,6 +8,6 @@ int main(int argc, char **argv, char **envp) {
     signal(SIGTSTP, SIG_IGN);
     signal(SIGUSR1, SIG_IGN);
     if (argc && argv)
-    mx_ush_init(var);
+        mx_ush_init(var);
     return 0;
 }
