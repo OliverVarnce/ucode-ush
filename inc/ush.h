@@ -4,7 +4,7 @@
 //------other headers------
 #include "ovoitenko.h"
 #include "ahrynko.h"
-#include "vzhikovskiy.h"
+#include "vzhukovskiy.h"
 #include "libmx.h"
 #include "posix_lib.h"
 
