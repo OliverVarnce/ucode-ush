@@ -163,7 +163,7 @@ uls : $(SRC) inc/ush.h libmx/libmx.a
 	@printf "\r\33[2K$@ \033[32;1mcreated\033[0m\n"
 	@mkdir -p $(OBJ_DIR)
 	@mv $(OBJ) $(OBJ_DIR)
-	@printf "\r\33[2K$(NAME) \033[33;1mcompile \033[0m$(<:$(SRC)/%.c=%) "
+	@printf "$(NAME) \033[31;1minstalled\033[0m\n"
 
 uninstall : clean
 	@make uninstall -C $(LIBMXF)
