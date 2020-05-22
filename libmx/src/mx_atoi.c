@@ -1,25 +1,22 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
-static int ato_posi(const char *str1) {
-    int num = 0;
-    int i = 0;
+int mx_atoi(const char *s) {
+    int i = 0, digits = 0, number = 0;
+    int sign = 1;
+    unsigned long long power = 1;
 
-    while (mx_isdigit(str1[i])) {
-        num = num * 10 + str1[i] - 48;
+    for (; mx_isspace(s[i]); i++);
+
+    if (s[i] == '-') {
+        sign = -1;
         i++;
     }
-    return num;
-}
 
-int mx_atoi(const char *str) {
-    int x = 0;
+    for (int j = i; mx_isdigit(s[j]); j++, digits++, power *= 10);
 
-    if (mx_isspace(str[x]))
-        return mx_atoi(&str[x + 1]);
-    if (str[x] == '-' && mx_isdigit(str[x+1]))
-        return -ato_posi(&str[x + 1]);
-    if (mx_isdigit(str[x]))
-        return ato_posi(&str[x]);
-    else
-        return 0;
+    for (power = power / 10; power > 0; power /= 10, i++) {
+        number += (s[i] - 48) * power;
+    }
+
+    return sign * number;
 }

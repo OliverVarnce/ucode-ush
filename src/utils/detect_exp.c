@@ -50,13 +50,13 @@ int find_exp_h(char *str, char *var, t_list **env_set) {
     return res;
 }
 
-int detect_exp(char **proc, t_hst *start_h, t_list **env_set) {
+int detect_exp(char **proc, t_history *start_h, t_list **env_set) {
     int tmp;
 
     if (mx_count_substr(proc[0], "=") == 1 && 
         mx_isalpha(proc[0][mx_get_char_index(proc[0], '=') - 1])) {
         env_in_list(env_set, proc[0]);
-        for (t_hst *h = start_h; h; h = h->next) {
+        for (t_history *h = start_h; h; h = h->next) {
             if (mx_get_substr_index(h->data, "export") >= 0) {
                 tmp = find_exp_h(h->data, proc[0], env_set);
                 if (tmp != 3)

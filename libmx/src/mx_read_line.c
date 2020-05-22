@@ -1,81 +1,239 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
-static void read_less_bufsize(t_tmp *tmp, t_read_bytes *bytes) {
-    bytes->buffer = mx_strndup(bytes->buffer, bytes->read);
-    free(tmp->buf);
-    tmp->buf = NULL;
-    bytes->buf_sz = bytes->read;
-    tmp->flag = -2;
-}
+static void add_to_line(char **lineptr, char *fragment, int fr_len) {
+    int ptr_len = mx_strlen(*lineptr);
+    char *temp = NULL;
 
-static void at_eof(t_tmp *tmp, t_str_len *tail,
-t_delim *del, t_read_bytes *bytes) {
-    while (tail->s[0] && (del->ind = mx_get_char_index(tail->s,
-        del->c)) >= 0) {
-        mx_push_back(&(tmp->strlist), mx_strndup(tail->s, del->ind));
-        tmp->str_sum_len += del->ind;
-        bytes->res += del->ind;
-        tail->s = mx_strdup(tail->s + del->ind + 1);
-        tail->len -= del->ind + 1;
-        free(tmp->s);
-        tmp->s = tail->s;
+    if (*lineptr) {
+        temp = mx_strncat(mx_strcpy(mx_strnew(ptr_len + fr_len), *lineptr),
+                         fragment, fr_len);
+        free(*lineptr);
+    } else {
+        temp = mx_strndup(fragment, fr_len);
     }
-    mx_push_back(&(tmp->strlist), mx_strdup(tail->s));
-    tmp->str_sum_len += tail->len;
-    bytes->res += tail->len;
-    tail->s = mx_strnew(0);
-    tail->len = 0;
-    free(tmp->s);
-    tmp->s = tail->s;
+    *lineptr = temp;
 }
 
-static void cycle(t_tmp *tmp, t_str_len *tail,
-t_delim *del, t_read_bytes *bytes) {
-    while (bytes->read > 0) {
-        if (bytes->read == bytes->buf_sz) {
-            mx_bufsize_chars_read(tmp, tail, del, bytes);
-            if (tmp->flag == 3) {
-                bytes->read = read(tmp->fd, bytes->buffer, bytes->buf_sz);
-                continue;
-            }
-            return;
+static bool read_from_buffer(char **lineptr, char delim, const int fd,
+                             char **static_buf, int *total_bytes) {
+    int di = 0;
+    int buf_len = 0;
+
+    if (!static_buf[fd])
+        return false;
+
+    di = mx_get_char_index(static_buf[fd], delim);
+    buf_len = mx_strlen(static_buf[fd]);
+
+    if (di >= 0) {
+        char *temp = NULL;
+
+        // add fragment until delimeter to line:
+        add_to_line(lineptr, static_buf[fd], di);
+
+        // reduce static buffer by fragment length:
+        temp = mx_strndup(&static_buf[fd][di+1], buf_len - (di+1));
+
+        free(static_buf[fd]);
+        static_buf[fd] = temp;
+        *total_bytes += di;
+
+        return true;
+    }
+
+    // if delimeter not found then add whole static buffer to line:
+    add_to_line(lineptr, static_buf[fd], buf_len);
+    *total_bytes += buf_len;
+    free(static_buf[fd]);
+    static_buf[fd] = NULL;
+
+    return false;
+}
+
+static bool read_from_fd(char **lineptr, size_t buf_size, char delim,
+                         const int fd, char **static_buf, int *total_bytes) {
+
+    char *buf = mx_strnew(buf_size-1);
+    int br = 0;
+    int di = 0;
+
+    if (!buf)
+        return -2;
+
+    while ((br = read(fd, buf, buf_size)) > 0) {
+        if ((di = mx_get_char_index(buf, delim)) >= 0) {
+            add_to_line(lineptr, buf, di);
+            static_buf[fd] = mx_strndup(&buf[di+1], br - (di+1));
+            free(buf);
+            *total_bytes += di;
+            return true;
         }
-        else {
-            read_less_bufsize(tmp, bytes);
-        }
+        add_to_line(lineptr, buf, br);
+        *total_bytes += br;
+        mx_memset(buf, '\0', buf_size);
     }
-    if (!bytes->res) {
-        if (!tail->s[0])
-            bytes->res = -1;
-        else
-            at_eof(tmp, tail, del, bytes);
-    }
-}
-
-static void clear(char **buffer, t_list **str_list){
-    free(*buffer);
-    *buffer = NULL;
-    mx_clear_list(str_list);
+    free(buf);
+    return false;
 }
 
 int mx_read_line(char **lineptr, size_t buf_size, char delim, const int fd) {
-    static t_str_len tail;
-    t_read_bytes bytes = {0, 0, buf_size, mx_strnew(buf_size)};
-    t_tmp tmp = {bytes.buffer, NULL, -1, lineptr, fd,
-    mx_create_node(mx_strnew(0)), 0};
-    t_delim del = {delim, -3};
+    static char *static_buf[4096];
+    int total_bytes = 0;
 
-    if (!tail.s)
-        tail.s = mx_strnew(bytes.buf_sz);
-    tmp.s = tail.s;
-    bytes.read = read(fd, bytes.buffer, bytes.buf_sz);
-    /* error case */
-    if (bytes.read < 0) {
-        clear(&(bytes.buffer), &(tmp.strlist));
+    if (fd < 0 || buf_size <= 0)
         return -2;
+
+    if (read_from_buffer(lineptr, delim, fd, static_buf, &total_bytes) ||
+        read_from_fd(lineptr, buf_size, delim, fd, static_buf, &total_bytes)) {
+
+        return total_bytes;
     }
-    cycle(&tmp, &tail, &del, &bytes);
-    mx_write_str_list(tmp.strlist, tmp.str_sum_len, lineptr);
-    clear(&(bytes.buffer), &(tmp.strlist));
-    return bytes.res;
+
+    return -1;
 }
+
+
+// int mx_read_line(char **lineptr, size_t buf_size, char delim, const int fd) {
+//     if (fd < 0 || buf_size <= 0)
+//         return -2;
+
+//     static char *static_buf[256];
+//     char *buf = mx_strnew(buf_size-1);
+//     int br = 0;
+//     int di = 0;
+//     int total_bytes = 0;
+
+//     if (!buf)
+//         return -2;
+
+//     // First step: read from the static buffer, if exists:
+//     if (static_buf[fd]) {
+//         int di = mx_get_char_index(static_buf[fd], delim);
+//         int buf_len = mx_strlen(static_buf[fd]);
+
+//         if (di >= 0) {
+//             // add fragment until delimeter to line:
+//             add_to_line(lineptr, static_buf[fd], di);
+
+//             // reduce static buffer by fragment length:
+//             char *temp = mx_strndup(&static_buf[fd][di+1], buf_len - (di+1));
+
+//             free(static_buf[fd]);
+//             static_buf[fd] = temp;
+//             free(buf);
+//             return total_bytes += di;
+//         } else {
+
+//             // if delimeter not found then add whole static buffer to line:
+//             add_to_line(lineptr, static_buf[fd], buf_len);
+//             total_bytes += buf_len;
+//             free(static_buf[fd]);
+//             static_buf[fd] = NULL;
+//         }
+//     }
+//     // Second step: read from the file descriptor:
+//     while ((br = read(fd, buf, buf_size)) > 0) {
+
+//         // check for delimeter within buffer:
+//         if ((di = mx_get_char_index(buf, delim)) >= 0) {
+//             add_to_line(lineptr, buf, di);
+//             static_buf[fd] = mx_strndup(&buf[di+1], br - (di+1));
+//             free(buf);
+//             return total_bytes += di;
+//         }
+//         add_to_line(lineptr, buf, br);
+//         total_bytes += br;
+//         mx_memset(buf, '\0', buf_size);
+//     }
+//     free(buf);
+
+//     return -1;
+// }
+
+// int mx_read_line(char **lineptr, size_t buf_size, char delim, const int fd) {
+//     if (fd < 0 || buf_size <= 0) return -2;
+
+//     static char *static_buf = NULL;
+//     char *buf = mx_strnew(buf_size-1);
+//     int br = 0, di = 0, total_bytes = 0;
+
+//     if (!buf)
+//         return -2;
+
+//     // First step: read from the static buffer, if exists:
+//     if (static_buf) {
+//         int di = mx_get_char_index(static_buf, delim);
+//         int buf_len = mx_strlen(static_buf);
+
+//         if (di >= 0) {
+//             // add fragment until delimeter to line:
+//             add_to_line(lineptr, static_buf, di);
+
+//             // reduce static buffer by fragment length:
+//             char *temp = mx_strndup(&static_buf[di+1], buf_len - (di+1));
+
+//             free(static_buf);
+//             static_buf = temp;
+//             free(buf);
+//             return total_bytes += di;
+//         } else {
+
+//             // if delimeter not found then add whole static buffer to line:
+//             add_to_line(lineptr, static_buf, buf_len);
+//             total_bytes += buf_len;
+//             free(static_buf);
+//             static_buf = NULL;
+//         }
+//     }
+//     // Second step: read from the file descriptor:
+//     while ((br = read(fd, buf, buf_size)) > 0) {
+
+//         // check for delimeter within buffer:
+//         if ((di = mx_get_char_index(buf, delim)) >= 0) {
+//             add_to_line(lineptr, buf, di);
+//             static_buf = mx_strndup(&buf[di+1], br - (di+1));
+//             free(buf);
+//             return total_bytes += di;
+//         }
+//         add_to_line(lineptr, buf, br);
+//         total_bytes += br;
+//         mx_memset(buf, '\0', buf_size);
+//     }
+//     free(buf);
+
+//     return -1;
+// }
+
+
+// static void add_to_line(char **lineptr, char *fragment, int fr_len) {
+//     if (fd < 0 || buf_size <= 0) return -1;
+
+//     char buffer[buf_size];
+//     int line_size = 0, br = 0, di = 0, total_bytes_read = 0;
+//     unsigned int pos = 0;
+
+//     *lineptr = mx_strnew(buf_size);
+//     line_size = buf_size;
+
+//     while ((br = read(fd, buffer, buf_size)) == buf_size && (di = mx_get_char_index(buffer, delim)) < 0) {
+//         mx_strcat(&(*lineptr)[pos], buffer);
+//         pos += buf_size;
+//         // --------------------------
+//         line_size += buf_size;
+//         char *temp = mx_strnew(line_size);
+//         mx_strcpy(temp, *lineptr);
+//         free(*lineptr);
+//         *lineptr = temp;
+//         // --------------------------
+//         total_bytes_read += buf_size;
+//     }
+//     if (di >= 0) {
+//         mx_strncat(&(*lineptr)[pos], buffer, di);
+//         total_bytes_read += di;
+//         lseek(fd, di - br + 1, SEEK_CUR);
+//     } else {
+//         mx_strncat(&(*lineptr)[pos], buffer, br);
+//         total_bytes_read += br;
+//     }
+//     return total_bytes_read;
+// }

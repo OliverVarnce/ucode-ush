@@ -11,7 +11,7 @@ static void start_loop(t_ush *ush) {
         line = read_stream(ush->hist);
         write (1, "\n", 1);
         if (line != NULL && mx_strlen(line) > 0) {
-            push_f(&ush->hist, line);
+            mx_history_replenish(&ush->hist, line);
             mx_disable_canon();
             mx_parse(line, ush);
             system("leaks -q ush");

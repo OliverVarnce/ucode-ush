@@ -62,9 +62,12 @@ SRC = $(addprefix $(SRC_DIR)/,\
       utils/detect_exp.c \
       utils/main.c \
       utils/mx_enable_disable_canon.c \
+      utils/mx_cooljoin.c \
+      utils/mx_delit_fre.c \
       utils/mx_getopt.c \
       utils/mx_setup_term.c \
       utils/mx_strpart.c \
+      utils/mx_strcmp_null.c \
       utils/name_search.c \
       utils/opencheck.c \
       utils/straus_proc.c)
@@ -119,9 +122,12 @@ OBJ = add_job.o \
       detect_exp.o \
       main.o \
       mx_enable_disable_canon.o \
+      mx_cooljoin.o \
+      mx_delit_fre.o \
       mx_getopt.o \
       mx_setup_term.o \
       mx_strpart.o \
+      mx_strcmp_null.o \
       name_search.o \
       opencheck.o \
       straus_proc.o
