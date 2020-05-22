@@ -1,24 +1,37 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
-char *mx_file_to_str(const char *file) {
-    const size_t b_size = 512;
-    char buffer[b_size];
-    int fd = -1;
-    char *str = NULL;
+static int check_fd(const char *file) {
+    int fd = open(file, O_RDONLY | O_DIRECTORY);
 
-    mx_memset(buffer, '\0', b_size);
-
-    if (!file)
-        return NULL;
-
-    if ((fd = open(file, O_RDONLY)) == -1)
-        return NULL;
-
-    while (read(fd, buffer, b_size) > 0) {
-        str = mx_strjoin(str, buffer);
-        mx_memset(buffer, '\0', b_size);
+    if (fd < 0) {
+        fd = open(file, O_RDONLY);
+        if (fd > 0) {
+            return fd;
+        }
     }
     close(fd);
+    return -1;
+}
 
-    return str;
+char *mx_file_to_str(const char *file) {
+    int fd = check_fd(file);
+    char buf[1024] = {0};
+    int total = 0;
+    char *s = NULL;
+    int bytes = 0;
+
+    if (fd < 0) {
+        return NULL;
+    }
+    while ((bytes = read(fd, buf, 1024)))
+        total += bytes;
+    close(fd);
+    s = mx_strnew(total);
+    fd = open(file, O_RDONLY);
+    for (total = 0; (bytes = read(fd, s + total, 1024));)
+        total += bytes;
+    close(fd);
+    if (*s)
+        return s;
+    return NULL;
 }

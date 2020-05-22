@@ -1,12 +1,12 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 int mx_get_substr_index(const char *str, const char *sub) {
-    if (!str || !sub) return -2;
-
-    for (int i = 0, sub_len = mx_strlen(sub); str[i] != '\0'; i++) {
-        if (mx_strncmp(&str[i], sub, sub_len) == 0) {
+    if (!sub || !str)
+        return -2;
+    if (!sub[0])
+        return 0;
+    for (int i = 0; str[i]; i++)
+        if (mx_is_substr(str + i, sub))
             return i;
-        }
-    }
     return -1;
 }
