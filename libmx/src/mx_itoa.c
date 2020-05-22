@@ -1,35 +1,24 @@
-#include "../inc/libmx.h"
-
-static short int numlen(int n) {
-    short int len = 1;
-
-    if (n < 0) {
-        len++;
-    }
-    while (n /= 10) {
-        len++;
-    }
-    return len;
-}
+#include "libmx.h"
 
 char *mx_itoa(int number) {
-    int len = 0;
-    char *str = NULL;
+    char buffer[12];
+    int i = 0;
+    long num = number;
 
-    if (number == -2147483648)
-        return mx_strdup("-2147483648");
-    if (!number)
-        return mx_strdup("0");
-    len = numlen(number);
-    str = (char*) malloc(sizeof(char) * (len + 1));
-    str[len] = 0;
+    if (number == 0)
+        return "0";
+
+    mx_memset(buffer, '\0', 12);
+
     if (number < 0) {
-        str[0] = '-';
-        number = -number;
+        buffer[i++] = '-';
+        num *= -1;
     }
-    for (int i = 0; number; i++) {
-        str[len - 1 - i] = number % 10 + '0';
-        number /= 10;
-    }
-    return str;
+    for (; num > 0; num /= 10)
+        buffer[i++] = num % 10 + 48;
+
+    for (int k = (number > 0 ? 0 : 1), j = i - 1; k < j; k++, j--)
+        mx_swap_char(&buffer[k], &buffer[j]);
+
+    return mx_strncpy(mx_strnew(i), buffer, i);
 }

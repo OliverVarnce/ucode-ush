@@ -1,23 +1,21 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 int mx_bubble_sort(char **arr, int size) {
-    int count = 1;
-    char flag = 1;
-    char *buf = 0;
     int swaps = 0;
+    int flag = 1;
 
-    while (flag) {
+    for (int i = 0; i < size && flag; i++) {
         flag = 0;
-        for (int i = 0; i < size - count; i++) {
-            if (mx_strcmp(arr[i], arr[i + 1]) > 0) {
-                buf = arr[i];
-                arr[i] = arr[i + 1];
-                arr[i + 1] = buf;
+        for (int j = 0, last = size - i - 1; j < last; j++) {
+            if (mx_strcmp(arr[j], arr[j+1]) > 0) {
+                char *temp = arr[j];
+
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+                swaps++;
                 flag = 1;
-                swaps += 1;
             }
         }
-        count += 1;
     }
     return swaps;
 }

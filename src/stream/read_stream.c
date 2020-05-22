@@ -13,8 +13,8 @@ static char *hist_but(char *line, char *data, int *x) {
     return line;
 }
 
-static char *button(t_hst **hs, char *line, int buf, int *x) {
-    t_hst *h = *hs;
+static char *button(t_history **hs, char *line, int buf, int *x) {
+    t_history *h = *hs;
 
     if (buf == 4283163) {
         h->next ? h = h->next : 0;
@@ -37,14 +37,14 @@ static char *button(t_hst **hs, char *line, int buf, int *x) {
     return line;
 }
 
-char *read_stream(t_hst *h) {
+char *read_stream(t_history *h) {
     unsigned int buf = 0;
     char *line = NULL;
     int len = 0;
     int x = 0;
-    t_hst *head = NULL;
+    t_history *head = NULL;
     
-    push_f(&h, "\0"); 
+    mx_history_replenish(&h, "\0");
     head = h; 
     while ((len = read(0, &buf, 4)) > 0) {
         if (len == 1) {

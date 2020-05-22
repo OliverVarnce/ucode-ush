@@ -1,23 +1,23 @@
 #include "ush.h"
 
-static t_hst *create_h(char *data) {
-    t_hst *h = (t_hst *)malloc(sizeof(t_hst) * 3);
+static t_history *init_history(char *data) {
+    t_history *history = (t_history *)malloc(sizeof(t_history) * 3);
 
-    h->data = mx_strdup(data);
-    h->next = NULL;
-    h->prev = NULL;
-    return h;
+    history->prev = NULL;
+    history->next = NULL;
+    history->data = mx_strdup(data);
+    return history;
 }
 
-void push_f(t_hst **hs, char *data) {
-    t_hst *p = *hs;
+void mx_history_replenish(t_history **history, char *data) {
+    t_history *story = *history;
     
-    if (p == NULL)
-        *hs = create_h(data);
+    if (story == NULL)
+        *history = init_history(data);
     else {
-        p->prev = create_h(data);
-        p->prev->next = p;
-        p = p->prev;
-        *hs = p;
+        story->prev = init_history(data);
+        story->prev->next = story;
+        story = story->prev;
+        *history = story;
     } 
 }

@@ -1,41 +1,18 @@
-#include "../inc/libmx.h"
-
-static unsigned long hexstrsize(unsigned long n) {
-    unsigned long size = 1;
-    unsigned long nbr = n;
-
-    while (nbr >>= 4)
-        size += 1;
-    return size;
-}
-
-static char digit_to_hexchar(short int d) {
-    if (d >= 0 && d <= 9)
-        return d + 48;
-    if (10 == d)
-        return 'a';
-    if (11 == d)
-        return 'b';
-    if (12 == d)
-        return 'c';
-    if (13 == d)
-        return 'd';
-    if (14 == d)
-        return 'e';
-    if (15 == d)
-        return 'f';
-    return '!';
-}
+#include "libmx.h"
 
 char *mx_nbr_to_hex(unsigned long nbr) {
-    unsigned long n = nbr;
-    unsigned long size = hexstrsize(n);
-    char *hex = (char*) malloc(sizeof(char) * (size + 1));
+	int hex_num_len = 0;
+	char hex_digits[] = {'0', '1', '2', '3', '4', '5', '6'
+							, '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+	char buffer[16];
 
-    hex[size] = 0;
-    for (unsigned long i = 0; i < size; i++) {
-        hex[size - 1 - i] = digit_to_hexchar(n % 16);
-        n >>= 4;
-    }
-    return hex;
+	if (nbr == 0) return "0";
+
+	for (unsigned long i = nbr; i > 0; i /= 16, hex_num_len++)
+		buffer[hex_num_len] = hex_digits[i%16];
+
+	for (int i = 0, j = hex_num_len - 1; i < j; i++, j--)
+		mx_swap_char(&buffer[i], &buffer[j]);
+
+	return mx_strncpy(mx_strnew(hex_num_len), buffer, hex_num_len);
 }
