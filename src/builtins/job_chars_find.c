@@ -46,7 +46,7 @@ static bool name_job(char *tmp , t_jobs **jobs){
     if (mx_isalpha(tmp[0])) {
         num = name_search(tmp , j);
         if(num == -1) {
-            not_found(tmp, "fg: job"); 
+            mx_printerror(1, "", tmp, "fg: job");
             return false;
         }
         else if (num == 0)

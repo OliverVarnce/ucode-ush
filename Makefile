@@ -13,27 +13,26 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SRC = $(addprefix $(SRC_DIR)/,\
-      buildins/add_job.c \
-      buildins/del_job.c \
-      buildins/detect_builds.c \
-      buildins/env_in_list.c \
-      buildins/env_print.c \
-      buildins/job_chars_find.c \
-      buildins/job_cut_str.c \
-      buildins/job_num_find.c \
-      buildins/mx_create_job.c \
-      buildins/ush_cd.c \
-      buildins/ush_echo.c \
-      buildins/ush_env.c \
-      buildins/ush_exit.c \
-      buildins/ush_export.c \
-      buildins/ush_fg.c \
-      buildins/ush_jobs.c \
-      buildins/ush_pwd.c \
-      buildins/ush_unset.c \
-      buildins/ush_which.c \
-      errhandlers/no_such.c \
-      errhandlers/not_found.c \
+      builtins/add_job.c \
+      builtins/del_job.c \
+      builtins/detect_builds.c \
+      builtins/env_in_list.c \
+      builtins/env_print.c \
+      builtins/job_chars_find.c \
+      builtins/job_cut_str.c \
+      builtins/job_num_find.c \
+      builtins/mx_create_job.c \
+      builtins/ush_cd.c \
+      builtins/ush_echo.c \
+      builtins/ush_env.c \
+      builtins/ush_exit.c \
+      builtins/ush_export.c \
+      builtins/ush_fg.c \
+      builtins/ush_jobs.c \
+      builtins/ush_pwd.c \
+      builtins/ush_unset.c \
+      builtins/ush_which.c \
+      errhandlers/mx_printerror.c \
       history/history.c \
       memory/free_jobs.c \
       memory/free_list.c \
@@ -92,8 +91,7 @@ OBJ = add_job.o \
       ush_pwd.o \
       ush_unset.o \
       ush_which.o \
-      no_such.o \
-      not_found.o \
+      mx_printerror.o \
       history.o \
       free_jobs.o \
       free_list.o \

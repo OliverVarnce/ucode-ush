@@ -68,7 +68,7 @@ static int ch_job(char **args, t_jobs *jobs, int i, char *flags) {
         for ( ; args[i]; i++) {
             ind = name_search(args[i], jobs);
             if (ind == -1) {
-                not_found(args[i], "jobs: job");
+                mx_printerror(1, "", args[i], "jobs: job");
                 return 1;
             }
             print_job(jobs, ind, flags);

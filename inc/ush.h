@@ -205,8 +205,8 @@ void env_in_list(t_list **env_set, char *src);
 int ush_export(char **args, t_list **env_set);
 int ush_unset(char **args, t_list **env_set);
 int ush_fg(char **args, t_jobs **jobs);
-int not_found(char *args, char *str);
-int no_such(char *name, char *args, char *str);
+int mx_printerror(int errnum, char *name, char *args, char *str);
+
 void del_job(t_jobs **jobs, int flag);
 char *cut_str_forjob(char *args);
 bool job_num_find(char *args, t_jobs **jobs);
