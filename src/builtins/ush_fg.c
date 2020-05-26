@@ -19,7 +19,7 @@ static bool pres_persent(char *args, t_jobs **jobs) {
             return false;
     }
     else {
-        not_found(args, "fg: job"); // любой другой знак
+        mx_printerror(1, "", args, "fg: job");
         return false;
     }
     return true; 
@@ -37,13 +37,12 @@ int ush_fg(char **args, t_jobs **jobs) {
             if (!pres_persent(args[i], jobs))
                 return 1;
         }
-        //букв команда без процента
         else if (mx_isalpha(args[i][0])) {
             if (!job_chars_find(args[i], jobs))
                 return 1;
         }
         else 
-            return not_found(args[i], "fg: job");
+            return mx_printerror(1, "", args[i], "fg: job");
     }
     return 0;
 }

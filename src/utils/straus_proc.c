@@ -7,7 +7,7 @@ int straus_proc(char **args, t_jobs **jobs) {
     pid = fork();
     if (pid == 0) {
         execvp(*args, args);
-        not_found(args[0], "ush: command");
+        mx_printerror(1, "", args[0], "ush: command");
         exit(127);
     }
     for (waitpid(pid, &status, WUNTRACED);
