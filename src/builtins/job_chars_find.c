@@ -3,7 +3,7 @@
 static bool cur_job(char *tmp , t_jobs **jobs){
     t_jobs *j = *jobs;
     
-    if (mx_strcmp_null(tmp, "%") == 0 || //current job последний
+    if (mx_strcmp_null(tmp, "%") == 0 ||
         mx_strcmp_null(tmp, "+") == 0 || tmp == NULL) { 
         if (j->data == NULL && j->num == -1) {
             write (1, "fg: no current job\n", 19);

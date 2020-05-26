@@ -138,12 +138,12 @@ CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
 all : install
 
-install : libmx/libmx.a uls
+install : libmx/libmx.a ush
 
 libmx/libmx.a:
 	@make -C $(LIBMXF)
 
-uls : $(SRC) inc/ush.h libmx/libmx.a
+ush : $(SRC) inc/ush.h libmx/libmx.a
 	@$(CC) $(CFLAGS) -c $(SRC) $(foreach d, $(INC), -I $d)
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBMXF)/$(LIB_NAME) -o $(APP_NAME)
 	@printf "\r\33[2K$@ \033[32;1mcreated\033[0m\n"
