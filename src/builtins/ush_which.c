@@ -25,7 +25,7 @@ static int check_access(char *args, int flag) {
 
 static int built_check(char *args) {
     char *built[] = {"cd", "pwd", "exit", "which", "env", "fg", 
-        "jobs", "export", "unset", "false", "true", NULL};
+        "processes", "export", "unset", "false", "true", NULL};
     
     for (int i = 0; built[i]; i++) {
         if (!strcmp(built[i], args)) {

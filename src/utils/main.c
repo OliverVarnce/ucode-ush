@@ -36,7 +36,7 @@ static void pipe_call(t_ush *ush) {
     mx_parse(line, ush);
 }
 
-static void set_shell_lvl_up(void) {
+static void set_slvlup() {
     char *s;
 
     if (getppid() == 1)
@@ -46,12 +46,12 @@ static void set_shell_lvl_up(void) {
     free(s);
 }
 
-int main(void) {
+int main() {
     int ex = 0;
     t_ush *ush = (t_ush *)calloc(6, sizeof(t_ush));
-    ush->jobs = mx_create_job(NULL, -1, -1, NULL);
+    ush->processes = mx_create_proc(NULL, -1, -1, NULL);
 
-    set_shell_lvl_up();
+    set_slvlup();
     ush->exit = -1;
     if (isatty(0)) {
         mx_setup_term(ush);
@@ -62,7 +62,7 @@ int main(void) {
     }
     else
         pipe_call(ush);
-    free_jobs(&ush->jobs);
+    free_processes(&ush->processes);
     free(ush);
     return 0;
 }

@@ -62,7 +62,7 @@ static int check_args(char ***args, t_env *env, char ***environ) {
     return 0;
 }
 
-int ush_env(char **args, t_jobs **jobs) {
+int ush_env(char **args, t_processes **processes) {
     extern char **environ;
     t_env *env = (t_env *)malloc(7 * sizeof(t_env));
     int status = 0;
@@ -77,7 +77,7 @@ int ush_env(char **args, t_jobs **jobs) {
     else for ( ; *args && mx_get_char_index(*args, '=') > -1; args++)
         putenv(*args);
     if (*args)
-        status = straus_proc(args, jobs);
+        status = mx_empty_proc(args, processes);
     else for (int i = 0; environ[i]; i++)
         printf("%s\n", environ[i]);
     e_work(&environ, env);

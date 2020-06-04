@@ -1,6 +1,6 @@
 #include "ush.h"
 
-int straus_proc(char **args, t_jobs **jobs) {
+int mx_empty_proc(char **args, t_processes **processes) {
     pid_t pid;
     int status = 0;
     
@@ -14,7 +14,7 @@ int straus_proc(char **args, t_jobs **jobs) {
         !WIFEXITED(status) && !WIFSIGNALED(status);
         waitpid(pid, &status, WUNTRACED)) {
         if (WIFSTOPPED(status)) {
-            add_job(jobs, args, pid);
+            add_proc(processes, args, pid);
             break ;
         }
     }
