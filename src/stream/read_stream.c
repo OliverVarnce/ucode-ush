@@ -39,7 +39,7 @@ static char *button(t_history **hs, char *line, int buf, int *x) {
     return line;
 }
 
-char *read_stream(t_history *h) {
+char *mx_read_stream(t_history *h) {
     unsigned int buf = 0;
     char *line = NULL;
     int len = 0;
@@ -51,12 +51,12 @@ char *read_stream(t_history *h) {
     for (;(len = read(0, &buf, 4)) > 0;) {
         if (len == 1) {
             if (buf == 10 || buf == 12 || (buf == 4 && 
-                (line == NULL || !strlen(line)))) {
+                (line == NULL || !mx_strlen(line)))) {
                 buf == 4 ? line = mx_strdup("exit") : 0;
                 buf == 12 ? line = mx_strdup("clear") : 0;
                 break ;
             }
-            line = stream(buf, line, &x);
+            line = mx_stream(buf, line, &x);
         }
         if (len > 1) 
             line = button(&h, line, buf, &x);

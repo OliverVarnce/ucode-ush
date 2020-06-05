@@ -3,6 +3,7 @@
 int mx_check_double_quote(char *s, int *i, t_frmt_lst **arr) {
     if (s[*i] != '\"')
         return 1;
+
     if (arr[TDBL_Q]) {
         if (arr[TDOL_CMD]) {
             if (arr[TDBL_Q]->data->start > arr[TDOL_CMD]->data->start)

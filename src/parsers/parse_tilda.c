@@ -27,11 +27,11 @@ static int tilde(char **str) {
         tilde2(str, &m);
         return 0;
     }
-    if (!getpwnam((tmp = strndup(*str + 1, strlen(m[0]) - 1)))) {
+    if (!getpwnam((tmp = strndup(*str + 1, mx_strlen(m[0]) - 1)))) {
         no_such_user(tmp, &m);
         return -1;
     }
-    mx_replace_sub_str(str, 0, strlen(tmp),
+    mx_replace_sub_str(str, 0, mx_strlen(tmp),
         (res = mx_strjoin("/Users/", tmp)));
     mx_del_strarr(&m);
     free(res);

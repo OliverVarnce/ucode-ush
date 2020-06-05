@@ -7,9 +7,9 @@ static bool replaced_escaped_hex(char *s) {
     if (s[1] == 'x') {
         s[0] = M_SKP;
         s[1] = M_SKP;
-        if ((isdigit(s[2]) || (s[2] >= 97 && s[2] <= 102))) {
+        if ((mx_isdigit(s[2]) || (s[2] >= 97 && s[2] <= 102))) {
             width++;
-            if ((isdigit(s[3]) || (s[3] >= 97 && s[3] <= 102)))
+            if ((mx_isdigit(s[3]) || (s[3] >= 97 && s[3] <= 102)))
                 width++;
         }
         if (width) {

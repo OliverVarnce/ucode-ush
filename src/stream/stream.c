@@ -1,10 +1,10 @@
 #include "ush.h"
 
 static char *delete_button(char *line) {
-    char *res = mx_strnew(strlen(line) - 1);
+    char *res = mx_strnew(mx_strlen(line) - 1);
 
     write(1, "\b \b", 3);
-    strncpy(res, line, strlen(line) - 1);
+    strncpy(res, line, mx_strlen(line) - 1);
     free(line);
     return res;
 }
@@ -13,17 +13,17 @@ static char *delete_check(char *line, int buf, int *x) {
     int index = 0;
     char *tmp = NULL;
 
-    if (buf == 127 && line != NULL && strlen(line) > 0 && *x == 0)
+    if (buf == 127 && line != NULL && mx_strlen(line) > 0 && *x == 0)
         line = delete_button(line);
     else if (buf == 127 && *x > 0 && *x < mx_strlen(line)) {
-        index = strlen(line) - *x;
+        index = mx_strlen(line) - *x;
         tmp = mx_strpart(line, index);
         for (int i = *x; i > 0; i--)
             write(1, " ", 1);
         for (int i = 0; i <= *x; i++)
             line = delete_button(line);
         mx_printstr(tmp);
-        line = mx_cooljoin(line, tmp);
+        line = mx_join(line, tmp);
         for (int i = 0; i < *x; i++) {
             printf("%c[1D", 27);
             fflush(stdout);
@@ -36,7 +36,7 @@ static char *edit_line(char *line, int *x, char *ch) {
     int index = 0;
     char *tmp = NULL;
 
-    index = strlen(line) - *x;
+    index = mx_strlen(line) - *x;
     tmp = mx_strpart(line, index);
     for (int i = *x; i > 0; i--)
         write(1, " ", 1);
@@ -44,7 +44,7 @@ static char *edit_line(char *line, int *x, char *ch) {
         line = delete_button(line);
     printf("%s%s", ch, tmp);
     line = mx_delit_fre(line, ch);
-    line = mx_cooljoin(line, tmp);
+    line = mx_join(line, tmp);
     for (int i = 0; i < *x; i++) {
         printf("%c[1D", 27);
         fflush(stdout);
@@ -56,14 +56,14 @@ static char *delete_but(char *line, int *x) {
     int index = 0;
     char *tmp = NULL;
 
-    index = strlen(line) - *x;
+    index = mx_strlen(line) - *x;
     tmp = mx_strpart(line, index + 1);
     for (int i = 0; i < *x; i++)
         write(1, " ", 1);
     for (int i = 0; i < *x; i++)
         line = delete_button(line);
     printf("%s", tmp);
-    line = mx_cooljoin(line, tmp);
+    line = mx_join(line, tmp);
     for (int i = 0; i < *x - 1; i++) {
         printf("%c[1D", 27);
         fflush(stdout);
@@ -72,7 +72,7 @@ static char *delete_but(char *line, int *x) {
     return line;
 }
 
-char *stream(int buf, char *line, int *x) {
+char *mx_stream(int buf, char *line, int *x) {
     char *ch = NULL;
 
     ch = (char *)(&buf);

@@ -2,7 +2,7 @@
 
 static int brace_pair_cycle(char *s, int *i, int start, t_frmt_lst **arr) {
     for (; s[*i]; (*i)++) {
-        if (isalpha(s[*i]) || isdigit(s[*i]))
+        if (mx_isalpha(s[*i]) || mx_isdigit(s[*i]))
             continue;
         else if (s[*i] == '}') {
             mx_push_back_format(arr + DOL_BP, start, *i, NULL);
@@ -39,7 +39,7 @@ static int find_dollar_param_end(char *s, int *i, t_frmt_lst **arr) {
         mx_push_back_format(arr + DOL_P, start, *i + 1, NULL);
         return 0;
     }
-    while (isalpha(s[*i + 1]) || isdigit(s[*i + 1]))
+    while (mx_isalpha(s[*i + 1]) || mx_isdigit(s[*i + 1]))
         (*i)++;
     if (*i - start == 0) {
         fprintf(stderr, MX_ERR_PARSE_UNESCDOL);

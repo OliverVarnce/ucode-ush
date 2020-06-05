@@ -30,6 +30,6 @@ void mx_free_format_lists(t_frmt_lst **arr) {
     if (!arr)
         return;
     for (int i = 0; i < NUM_Q; i++)
-        while (arr[i])
+        for (; arr[i];)
             mx_pop_format(arr + i);
 }
