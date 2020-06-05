@@ -102,7 +102,7 @@ OBJ = add_proc.o \
       parse_dblqte_openparen_closeparen_opbrce_clbrce.o \
       parse_dollar.o \
       parse_get_format_str.o \
-      parse_get_process_output.o \
+      parse_get_proc_output.o \
       parse_get_subst_replace_str.o \
       parse_mark_chars.o \
       parse_mx_check_parse.o \

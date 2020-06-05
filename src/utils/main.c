@@ -41,9 +41,12 @@ static void set_slvlup() {
 
     if (getppid() == 1)
         return;
-    s = mx_itoa((atoi(getenv("SHLVL"))) + 1);
-    setenv("SHLVL", s, 1);
-    free(s);
+    if (getenv("SHLVL")) {
+        s = mx_itoa((mx_atoi(getenv("SHLVL"))) + 1);
+        setenv("SHLVL", s, 1);
+        free(s);
+    }
+
 }
 
 int main() {

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef USH_H
+#define USH_H
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -217,3 +219,5 @@ char *mx_delit_fre(char *src, char *d);
 char *mx_join(char *src, char *d);
 int mx_strcmp_null(const char *s1, const char *s2);
 int env_print(void);
+
+#endif
