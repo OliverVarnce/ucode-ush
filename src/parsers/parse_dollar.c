@@ -41,7 +41,7 @@ static int find_dollar_param_end(char *s, int *i, t_frmt_lst **arr) {
     }
     while (isalpha(s[*i + 1]) || isdigit(s[*i + 1]))
         (*i)++;
-    if (*i - start == 0) {  // unescaped $ with no characters
+    if (*i - start == 0) {
         fprintf(stderr, MX_ERR_PARSE_UNESCDOL);
         return -1;
     }
@@ -58,8 +58,8 @@ int mx_check_dollar(char *s, int *i, t_frmt_lst **arr) {
         return 0;
     }
     else if (s[*i + 1] == '{')
-        return find_brace_pair(s, i, arr);  // changes position
+        return find_brace_pair(s, i, arr);
     else
-        return find_dollar_param_end(s, i, arr);  // changes position
+        return find_dollar_param_end(s, i, arr);
 }
 

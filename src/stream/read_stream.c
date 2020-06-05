@@ -1,12 +1,14 @@
 #include "ush.h"
 
-static char *hist_but(char *line, char *data, int *x) {
+static char *history_button(char *line, char *data, int *x) {
     for (; *x > 0; (*x)--) {
         printf("%c[1C", 27);
         fflush(stdout);
     }
+
     for (int i = 0; line != NULL && i < mx_strlen(line); i++)
         write(1, "\b \b", 3);
+
     mx_strdel(&line);
     write(1, data, mx_strlen(data));
     line = mx_strdup(data);
@@ -18,11 +20,11 @@ static char *button(t_history **hs, char *line, int buf, int *x) {
 
     if (buf == 4283163) {
         h->next ? h = h->next : 0;
-        line = hist_but(line, h->data, x);
+        line = history_button(line, h->data, x);
     }
     if (buf == 4348699) {
         h->prev ? h = h->prev : 0;
-        line = hist_but(line, h->data, x);
+        line = history_button(line, h->data, x);
     }
     if (buf == 4414235 && *x > 0) {
         printf("%c[1C", 27);
@@ -43,10 +45,10 @@ char *read_stream(t_history *h) {
     int len = 0;
     int x = 0;
     t_history *head = NULL;
-    
+
     mx_history_replenish(&h, "\0");
     head = h; 
-    while ((len = read(0, &buf, 4)) > 0) {
+    for (;(len = read(0, &buf, 4)) > 0;) {
         if (len == 1) {
             if (buf == 10 || buf == 12 || (buf == 4 && 
                 (line == NULL || !strlen(line)))) {

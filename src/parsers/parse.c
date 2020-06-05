@@ -17,7 +17,7 @@ int mx_parse_exec(char *subline, t_ush *ush) {
     mx_mark_slash_dbl_single_quote(subline, arr);
     mx_mark_chars(subline, arr);
 
-    if (mx_handle_substitutions(&subline, arr, ush) == -1) {  // parse errors
+    if (mx_handle_substitutions(&subline, arr, ush) == -1) {
         mx_quit_parse(NULL, ush, 1, arr);
         return -1;
     }
@@ -32,8 +32,8 @@ int mx_parse_exec(char *subline, t_ush *ush) {
 int mx_semicolon_split(char *line, t_ush *ush, char ***subcommands) {
     t_frmt_lst *arr[NUM_Q] = {NULL};
 
-    if (mx_get_format_str(line, arr) < 0) {  // parse errors
-        mx_quit_parse(line, ush, 1, arr);  // line is freeed
+    if (mx_get_format_str(line, arr) < 0) {
+        mx_quit_parse(line, ush, 1, arr);
         return -1;
     }
     mx_mark_semicolon(line, arr);
@@ -45,7 +45,7 @@ int mx_semicolon_split(char *line, t_ush *ush, char ***subcommands) {
 int mx_parse(char *line, t_ush *ush) {
     char **subcommands = {NULL};
 
-    if (mx_semicolon_split(line, ush, &subcommands) == -1) {  // parse errors
+    if (mx_semicolon_split(line, ush, &subcommands) == -1) {
         return -1;
     }
     for (char **s = subcommands; *s; s++)

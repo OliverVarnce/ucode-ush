@@ -27,7 +27,6 @@ int mx_check_open_paren(char *s, int *i, t_frmt_lst **arr) {
         return 0;
     fprintf(stderr, MX_ERR_PARSE_UNESCOPPAR);
     return -1;
-    arr++;
 }
 
 int mx_check_close_paren(char *s, int *i, t_frmt_lst **arr) {
@@ -54,7 +53,6 @@ int mx_check_open_brace(char *s, int *i, t_frmt_lst **arr) {
         return 0;
     fprintf(stderr, MX_ERR_PARSE_UNESCOPBRC);
     return -1;
-    arr++;  // to trick compiler
 }
 
 int mx_check_close_brace(char *s, int *i, t_frmt_lst **arr) {
@@ -64,5 +62,4 @@ int mx_check_close_brace(char *s, int *i, t_frmt_lst **arr) {
         return 0;
     fprintf(stderr, MX_ERR_PARSE_UNESCCLBRC);
     return -1;
-    arr++;  // to trick compiler
 }

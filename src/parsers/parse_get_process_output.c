@@ -2,7 +2,7 @@
 
 static void end_reading(pid_t pid, int *pipe) {
     int status;
-    
+
     close(pipe[0]);
     waitpid(pid, &status, WUNTRACED);
     errno = 0;
@@ -29,7 +29,7 @@ static char *read_output(pid_t pid, int *pipe) {
 static char *process_output(char *str, int (*parse_p)(char *, t_ush *),
                             t_ush *ush) {
     pid_t pid;
-    int p[2];  // pipe
+    int p[2];
 
     if (!mx_check_parse(str))
         return NULL;
