@@ -4,9 +4,8 @@ LIBMXF = libmx
 
 LIB_NAME = libmx.a
 
-INC = \
-inc/ \
-libmx/inc/
+INC = inc/ \
+	  libmx/inc/
 
 SRC_DIR = src
 
