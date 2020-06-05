@@ -61,7 +61,7 @@ SRC = $(addprefix $(SRC_DIR)/,\
       utils/mx_detect_exp.c \
       utils/main.c \
       utils/mx_enable_disable_canon.c \
-      utils/mx_cooljoin.c \
+      utils/mx_join.c \
       utils/mx_delit_fre.c \
       utils/mx_getopt.c \
       utils/mx_setup_term.c \
@@ -120,7 +120,7 @@ OBJ = add_proc.o \
       mx_detect_exp.o \
       main.o \
       mx_enable_disable_canon.o \
-      mx_cooljoin.o \
+      mx_join.o \
       mx_delit_fre.o \
       mx_getopt.o \
       mx_setup_term.o \

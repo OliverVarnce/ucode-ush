@@ -1,6 +1,6 @@
 #include "ush.h"
 
-char *mx_cooljoin(char *src, char *d) {
+char *mx_join(char *src, char *d) {
     char *s = NULL;
 
     s = mx_strjoin(src, d);

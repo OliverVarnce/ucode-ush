@@ -2,7 +2,7 @@
 
 static void paste_subst(char **str, char *replace, t_range *rep_range,
                             t_frmt_lst **arr) {
-    int shift = strlen(replace) - (rep_range->end - rep_range->start + 1);
+    int shift = mx_strlen(replace) - (rep_range->end - rep_range->start + 1);
 
     for (t_frmt_lst *p = arr[OUT_SUB]->next; p; p = p->next) {
         p->data->start += shift;
@@ -25,7 +25,7 @@ static char *mark_sbst_output(char *str, bool in_quotes) {
 
     if (!str || !*str)
         return str;
-    for (s = str + strlen(str) - 1; *s == '\n'; s--)
+    for (s = str + mx_strlen(str) - 1; *s == '\n'; s--)
         *s = M_SKP;
     if (in_quotes)
         return str;
@@ -41,7 +41,7 @@ int mx_handle_substitutions(char **str, t_frmt_lst **arr, t_ush *ush) {
     char *replace = NULL;
     char *process_out = NULL;
 
-    mx_create_outer_subst_n_dblq_list(*str, arr);
+    mx_create_outer_subst_n_double_q_list(*str, arr);
     for (t_frmt_lst *lst; (lst = arr[OUT_SUB]); mx_pop_format(arr + OUT_SUB)) {
         replace = mx_get_subst_replace_str(str, lst, ush);
         if ((*str)[lst->data->start] == '`'
@@ -53,7 +53,7 @@ int mx_handle_substitutions(char **str, t_frmt_lst **arr, t_ush *ush) {
             replace = mark_sbst_output(process_out,
                 mx_is_inside_of(lst->data->start, OUT_DBQ, arr) ? 1 : 0);
         }
-        paste_subst(str, replace, lst->data, arr);  // replace freed
+        paste_subst(str, replace, lst->data, arr);
     }
     return 0;
 }

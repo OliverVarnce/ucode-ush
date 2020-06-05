@@ -35,7 +35,7 @@ static char *param_dollar_braces_expansion(char **str, t_frmt_lst *list,
 
 static void unslash_str(char **str) {
     int new_p = 0;
-    char *new = calloc(1, strlen(*str) + 1);
+    char *new = calloc(1, mx_strlen(*str) + 1);
     bool flag = 0;
 
     for (char *s = *str; *s; s++) {

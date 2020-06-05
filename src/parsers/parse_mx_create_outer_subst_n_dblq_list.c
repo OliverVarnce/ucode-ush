@@ -22,14 +22,14 @@ static t_range *is_subst(t_frmt_lst **arr, int start, enum e_quote *type) {
     return NULL;
 }
 
-static t_range *is_dble_q(t_frmt_lst **arr, int start) {
+static t_range *is_double_q(t_frmt_lst **arr, int start) {
     for (t_frmt_lst *p = arr[DBL_Q]; p; p = p->next)
         if (start == p->data->start)
             return p->data;
     return NULL;
 }
 
-void mx_create_outer_subst_n_dblq_list(char *s, t_frmt_lst **arr) {
+void mx_create_outer_subst_n_double_q_list(char *s, t_frmt_lst **arr) {
     enum e_quote type = 0;
     t_range *range = NULL;
 
@@ -39,7 +39,7 @@ void mx_create_outer_subst_n_dblq_list(char *s, t_frmt_lst **arr) {
             mx_push_back_format(arr + OUT_SUB, range->start, range->end, NULL);
             i = range->end;
         }
-        else if (s[i] == M_SKP && (range = is_dble_q(arr, i))
+        else if (s[i] == M_SKP && (range = is_double_q(arr, i))
                  && is_outer(i, arr)) {
             mx_push_back_format(arr + OUT_DBQ, range->start, range->end, NULL);
         }
