@@ -28,7 +28,7 @@ static int built_check(char *args) {
         "processes", "export", "unset", "false", "true", NULL};
     
     for (int i = 0; built[i]; i++) {
-        if (!strcmp(built[i], args)) {
+        if (!mx_strcmp(built[i], args)) {
             printf("%s: shell built-in command\n", built[i]);
             return 0;
         }

@@ -1,35 +1,35 @@
 #include "ush.h"
 
 int builtin(char **args, t_ush *ush) {
-    if (!strcmp(args[0], "echo"))
+    if (!mx_strcmp(args[0], "echo"))
         return mx_ush_echo(args);
-    if (!strcmp(args[0], "cd"))
+    if (!mx_strcmp(args[0], "cd"))
         return ush_cd(args);
-    if (!strcmp(args[0], "pwd"))
+    if (!mx_strcmp(args[0], "pwd"))
         return ush_pwd(args);
-    if (!strcmp(args[0], "env"))
+    if (!mx_strcmp(args[0], "env"))
         return ush_env(args, &ush->processes);
-    if (!strcmp(args[0], "exit"))
+    if (!mx_strcmp(args[0], "exit"))
         return ush_exit(args, ush);
-    if (!strcmp(args[0], "which"))
+    if (!mx_strcmp(args[0], "which"))
         return ush_which(args);
-    if (!strcmp(args[0], "export"))
+    if (!mx_strcmp(args[0], "export"))
         return ush_export(args, &ush->env_set);
-    if (!strcmp(args[0], "unset"))
+    if (!mx_strcmp(args[0], "unset"))
         return ush_unset(args, &ush->env_set);
-    if (!strcmp(args[0], "fg"))
+    if (!mx_strcmp(args[0], "fg"))
         return ush_fg(args, &ush->processes);
-    if (!strcmp(args[0], "processes"))
+    if (!mx_strcmp(args[0], "processes"))
         return ush_processes(args, &ush->processes);
-    if (!strcmp(args[0], "false"))
+    if (!mx_strcmp(args[0], "false"))
         return 1;
-    if (!strcmp(args[0], "true"))
+    if (!mx_strcmp(args[0], "true"))
         return 0;
     return -1;
 }
 
 int detect_builds(char **args, t_ush *ush) {
-    int bins = 1;
+    int bins;
 
     if (!args || !args[0])
         return 0;

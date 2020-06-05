@@ -5,7 +5,7 @@ static void start_loop(t_ush *ush) {
     ush->hist = NULL;
     ush->env_set = mx_create_node(NULL);
 
-    while (YARIK_PEREPISIVAYET_LS) {
+    for (; CANON_OPTS;) {
         mx_enable_canon();
         write(1, "u$h> ", mx_strlen("u$h> "));
         line = mx_read_stream(ush->hist);
@@ -17,7 +17,7 @@ static void start_loop(t_ush *ush) {
             system("leaks -q ush");
         }
         if (ush->exit >= 0)
-            break ;
+            break;
     }
     tcsetattr(0, TCSAFLUSH, &ush->savetty);
     free_list2(&ush->env_set);
@@ -60,7 +60,7 @@ int main() {
         mx_setup_term(ush);
         start_loop(ush);
         ex = ush->exit;
-        free_list(&ush->hist);
+        free_history(&ush->hist);
         exit(ex);
     }
     else

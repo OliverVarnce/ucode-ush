@@ -31,7 +31,7 @@
 #define MX_IFMT          0170000    
 #define MX_IFLNK         0120000         /* [XSI] symbolic link */
 
-#define YARIK_PEREPISIVAYET_LS 228
+#define CANON_OPTS 228
 
 typedef struct s_processes {
     int num;
@@ -91,8 +91,7 @@ typedef struct s_ush {
 #define MX_ERR_PARSE_UNESCOPBRC "ush: unescaped {\n"
 #define MX_ERR_PARSE_UNESCCLBRC "ush: unescaped }\n"
 #define MX_ERR_PARSE_NO_SUCH_USER "ush: no such user or named directory: "
-
-#define MX_IS_SP_TAB_NL(c) (c == '\n' || c == '\t' || c == ' ')
+#define MX_IS_SP_TAB_NL(c) ((c == '\n') || (c == '\t') || (c == ' '))
 
 enum e_quote {
     SIN_Q,
@@ -191,7 +190,7 @@ int ush_exit(char **args, t_ush *ush);
 int ush_pwd(char **args);
 bool mx_opencheck(char *dirname, t_cd *in);
 char *mx_read_stream(t_history *h);
-void free_list(t_history **list);
+void free_history(t_history **list);
 void free_list2(t_list **list);
 int ush_which(char **args);
 int mx_empty_proc(char **args, t_processes **processes);
