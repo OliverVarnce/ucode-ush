@@ -31,13 +31,13 @@
 
 #define YARIK_PEREPISIVAYET_LS 228
 
-typedef struct s_jobs {
+typedef struct s_processes {
     int num;
     pid_t pid;
     char **data;
     char *pwd;
-    struct s_jobs *next;
-}              t_jobs;
+    struct s_processes *next;
+}              t_processes;
 
 typedef struct s_cd {
     int error;
@@ -63,7 +63,7 @@ typedef struct s_ush {
     int last_return;
     int exit;
     struct s_list *pids;
-    struct s_jobs *jobs;
+    struct s_processes *processes;
     struct s_list *env_set;
     struct s_history *hist;
     struct termios savetty;
@@ -178,21 +178,21 @@ void mx_setup_term(t_ush *ush);
 //------------------------------------------------------------------
 void mx_push_backdup(t_list **list, void *data);
 void mx_pop_frontf(t_list **head);
-void add_job(t_jobs **j, char **args, pid_t pid);
-t_jobs *mx_create_job(char **data, int num, pid_t pid, char *pwd);
-char **copy_dub_arr(char **args);
-void free_jobs(t_jobs **jobs);
+void add_proc(t_processes **j, char **args, pid_t pid);
+t_processes *mx_create_proc(char **data, int num, pid_t pid, char *pwd);
+char **mx_copy_dub_arr(char **args);
+void free_processes(t_processes **processes);
 void mx_history_replenish(t_history **hs, char *data);
 int ush_cd(char **args);
-int ush_env(char **args, t_jobs **jobs);
+int ush_env(char **args, t_processes **processes);
 int ush_exit(char **args, t_ush *ush);
 int ush_pwd(char **args);
-bool opencheck(char *dirname, t_cd *in);
+bool mx_opencheck(char *dirname, t_cd *in);
 char *mx_read_stream(t_history *h);
 void free_list(t_history **list);
 void free_list2(t_list **list);
 int ush_which(char **args);
-int straus_proc(char **args, t_jobs **jobs);
+int mx_empty_proc(char **args, t_processes **processes);
 int mx_parse(char *line, t_ush *ush);
 int detect_builds(char **args, t_ush *ush);
 char *mx_strpart(char *str, int index);
@@ -200,19 +200,19 @@ char *mx_stream(int buf, char *line, int *x);
 void free_node(t_history *node);
 int detect_builds(char **args, t_ush *ush);
 
-int detect_exp(char **proc, t_history *start_h, t_list **env_set);
+int mx_detect_exp(char **proc, t_history *start_h, t_list **env_set);
 void env_in_list(t_list **env_set, char *src);
 int ush_export(char **args, t_list **env_set);
 int ush_unset(char **args, t_list **env_set);
-int ush_fg(char **args, t_jobs **jobs);
+int ush_fg(char **args, t_processes **processes);
 int mx_printerror(int errnum, char *name, char *args, char *str);
 
-void del_job(t_jobs **jobs, int flag);
-char *cut_str_forjob(char *args);
-bool job_num_find(char *args, t_jobs **jobs);
-bool job_chars_find(char *args, t_jobs **jobs);
-int name_search(char *tmp , t_jobs *jobs);
-int ush_jobs(char **args, t_jobs **jobs);
+void del_proc(t_processes **processes, int flag);
+char *cut_str_forproc(char *args);
+bool proc_num_find(char *args, t_processes **processes);
+bool proc_chars_find(char *args, t_processes **processes);
+int mx_name_search(char *tmp , t_processes *processes);
+int ush_processes(char **args, t_processes **processes);
 char *mx_delit_fre(char *src, char *d);
 char *mx_join(char *src, char *d);
 int mx_strcmp_null(const char *s1, const char *s2);

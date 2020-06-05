@@ -1,9 +1,9 @@
 #include "ush.h"
 
-void free_jobs(t_jobs **jobs) {
-    t_jobs *j = *jobs;
+void free_processes(t_processes **processes) {
+    t_processes *j = *processes;
     while(j) {
-        t_jobs *hren = j->next;
+        t_processes *hren = j->next;
         if (j->data != NULL) 
             mx_del_strarr(&j->data);
         mx_strdel(&j->pwd);

@@ -8,7 +8,7 @@ int builtin(char **args, t_ush *ush) {
     if (!strcmp(args[0], "pwd"))
         return ush_pwd(args);
     if (!strcmp(args[0], "env"))
-        return ush_env(args, &ush->jobs);
+        return ush_env(args, &ush->processes);
     if (!strcmp(args[0], "exit"))
         return ush_exit(args, ush);
     if (!strcmp(args[0], "which"))
@@ -18,9 +18,9 @@ int builtin(char **args, t_ush *ush) {
     if (!strcmp(args[0], "unset"))
         return ush_unset(args, &ush->env_set);
     if (!strcmp(args[0], "fg"))
-        return ush_fg(args, &ush->jobs);
-    if (!strcmp(args[0], "jobs"))
-        return ush_jobs(args, &ush->jobs);
+        return ush_fg(args, &ush->processes);
+    if (!strcmp(args[0], "processes"))
+        return ush_processes(args, &ush->processes);
     if (!strcmp(args[0], "false"))
         return 1;
     if (!strcmp(args[0], "true"))
@@ -35,9 +35,9 @@ int detect_builds(char **args, t_ush *ush) {
         return 0;
     if ((bins = builtin(args, ush)) != -1) 
         return bins;
-    bins = detect_exp(args, ush->hist, &ush->env_set);;
+    bins = mx_detect_exp(args, ush->hist, &ush->env_set);;
     if (bins != 3) 
         return bins;
     else
-        return straus_proc(args, &ush->jobs);
+        return mx_empty_proc(args, &ush->processes);
 }

@@ -1,6 +1,6 @@
 #include "ush.h"
 
-void reload(pid_t pid, char **args, t_jobs **jobs) {
+void reload(pid_t pid, char **args, t_processes **processes) {
     int status;
     pid_t tmp;
     pid_t wait;
@@ -13,7 +13,7 @@ void reload(pid_t pid, char **args, t_jobs **jobs) {
         wait = waitpid(tmp, &status, WUNTRACED);
         while (!WIFEXITED(status) && !WIFSIGNALED(status)) {
             if (WIFSTOPPED(status)) {
-                add_job(jobs, args, pid);
+                add_proc(processes, args, pid);
                 break;
             }
             wait = waitpid(tmp, &status, WUNTRACED);
@@ -21,25 +21,25 @@ void reload(pid_t pid, char **args, t_jobs **jobs) {
     }
 }
 
-static void del_body(t_jobs **jobs) {
-    t_jobs *j = *jobs;
-    t_jobs *del = j->next;
+static void del_body(t_processes **processes) {
+    t_processes *j = *processes;
+    t_processes *del = j->next;
     
-    reload(del->pid, del->data, jobs);
+    reload(del->pid, del->data, processes);
     j->next = NULL;
     j->next = del->next;
     del->next = NULL;
-    free_jobs(&del);
+    free_processes(&del);
 }
 
 
-void del_job(t_jobs **jobs, int flag) {
-    t_jobs *j = *jobs;
-    t_jobs *del = j->next;
+void del_proc(t_processes **processes, int flag) {
+    t_processes *j = *processes;
+    t_processes *del = j->next;
     
     if (flag == 1) { //голова
         //kill(j->pid, SIGCONT);
-        reload(j->pid, j->data, jobs);
+        reload(j->pid, j->data, processes);
         if (j->next == NULL) { //когда один остается
             if (j->data != NULL) 
                 mx_del_strarr(&j->data);
@@ -50,10 +50,10 @@ void del_job(t_jobs **jobs, int flag) {
             return ;
         }
         j->next = NULL;
-        free_jobs(&j);
-        *jobs = del;
+        free_processes(&j);
+        *processes = del;
     }
     if (flag == 2) { //тело
-        del_body(jobs);
+        del_body(processes);
     }
 }

@@ -64,7 +64,7 @@ char *prosto_path(char *newpwd, char *m, t_cd *in) {
         newpwd = mx_delit_fre(newpwd, "/");
     newpwd = mx_delit_fre(newpwd, m);
     // printf("%s\n", newpwd);
-    if (!opencheck(newpwd, in)) {
+    if (!mx_opencheck(newpwd, in)) {
         free(newpwd);
         return NULL;
     }
