@@ -31,7 +31,7 @@
 #define MX_IFMT          0170000    
 #define MX_IFLNK         0120000         /* [XSI] symbolic link */
 
-#define YARIK_PEREPISIVAYET_LS 228
+#define CANON_OPTS 228
 
 typedef struct s_processes {
     int num;
@@ -91,7 +91,6 @@ typedef struct s_ush {
 #define MX_ERR_PARSE_UNESCOPBRC "ush: unescaped {\n"
 #define MX_ERR_PARSE_UNESCCLBRC "ush: unescaped }\n"
 #define MX_ERR_PARSE_NO_SUCH_USER "ush: no such user or named directory: "
-
 #define MX_IS_SP_TAB_NL(c) (c == '\n' || c == '\t' || c == ' ')
 
 enum e_quote {
