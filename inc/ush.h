@@ -91,7 +91,7 @@ typedef struct s_ush {
 #define MX_ERR_PARSE_UNESCOPBRC "ush: unescaped {\n"
 #define MX_ERR_PARSE_UNESCCLBRC "ush: unescaped }\n"
 #define MX_ERR_PARSE_NO_SUCH_USER "ush: no such user or named directory: "
-#define MX_IS_SP_TAB_NL(c) (c == '\n' || c == '\t' || c == ' ')
+#define MX_IS_SP_TAB_NL(c) ((c == '\n') || (c == '\t') || (c == ' '))
 
 enum e_quote {
     SIN_Q,

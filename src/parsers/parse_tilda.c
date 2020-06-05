@@ -1,10 +1,10 @@
 #include "ush.h"
 
 static void tilde2(char **str, char ***arr) {
-    if (strcmp((*arr)[0], "~+") == 0) {
+    if (mx_strcmp((*arr)[0], "~+") == 0) {
         mx_replace_sub_str(str, 0, 1, getenv("PWD"));
     }
-    else if (strcmp((*arr)[0], "~-") == 0) {
+    else if (mx_strcmp((*arr)[0], "~-") == 0) {
         mx_replace_sub_str(str, 0, 1, getenv("OLDPWD"));
     }
     else
@@ -23,7 +23,7 @@ static int tilde(char **str) {
     char *tmp = NULL;
     char **m = mx_strsplit(*str, '/');
 
-    if (!strcmp(m[0], "~+") || !strcmp(m[0], "~-") || !strcmp(m[0], "~")) {
+    if (!mx_strcmp(m[0], "~+") || !mx_strcmp(m[0], "~-") || !mx_strcmp(m[0], "~")) {
         tilde2(str, &m);
         return 0;
     }

@@ -62,4 +62,3 @@ int mx_check_dollar(char *s, int *i, t_frmt_lst **arr) {
     else
         return find_dollar_param_end(s, i, arr);
 }
-

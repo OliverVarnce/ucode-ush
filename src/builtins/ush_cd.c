@@ -73,15 +73,15 @@ char *prosto_path(char *newpwd, char *m, t_cd *in) {
 
 char *gogo(char *newpwd, char **m, t_cd *in) {
     for (int j = 0; m[j]; j++) {
-        if (!strcmp(m[j], "~") && j == 0) 
+        if (!mx_strcmp(m[j], "~") && j == 0)
             continue;
-        else if (!strcmp(m[j], "..") && newpwd != NULL && 
-            strcmp(newpwd, "/") != 0) {
+        else if (!mx_strcmp(m[j], "..") && newpwd != NULL &&
+            mx_strcmp(newpwd, "/") != 0) {
             newpwd = dotdot(newpwd);
         }
-        else if (!strcmp(m[j], "."))
+        else if (!mx_strcmp(m[j], "."))
             continue;
-        else if (strcmp(m[j], "..") != 0) {
+        else if (mx_strcmp(m[j], "..") != 0) {
             newpwd = prosto_path(newpwd, m[j], in);
             if (in->error > 0) {
                 mx_del_strarr(&m);
@@ -105,13 +105,13 @@ char *proverka(char **args, int f, char *pwd) {
 }
 
 int tak_syak(char **args, char *pwd, t_cd *in) {
-    if (args[1] == NULL || !strcmp(args[in->f], "~")) 
+    if (args[1] == NULL || !mx_strcmp(args[in->f], "~"))
         return env_work(getenv("HOME"), pwd, args[0], in);
-    if (!strcmp(args[in->f], "-") || !strcmp(args[in->f], "~-")) 
+    if (!mx_strcmp(args[in->f], "-") || !mx_strcmp(args[in->f], "~-"))
         return env_work(getenv("OLDPWD"), pwd, args[in->f], in);
-    if (!strcmp(args[in->f], "~+")) 
+    if (!mx_strcmp(args[in->f], "~+"))
         return env_work(getenv("PWD"), pwd, args[in->f], in);
-    if (strcmp(args[in->f], "/") == 0)
+    if (mx_strcmp(args[in->f], "/") == 0)
         return env_work("/", pwd, args[in->f], in);
     return 0;
 }
