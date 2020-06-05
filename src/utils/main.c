@@ -8,7 +8,7 @@ static void start_loop(t_ush *ush) {
     while (YARIK_PEREPISIVAYET_LS) {
         mx_enable_canon();
         write(1, "u$h> ", mx_strlen("u$h> "));
-        line = read_stream(ush->hist);
+        line = mx_read_stream(ush->hist);
         write (1, "\n", 1);
         if (line != NULL && mx_strlen(line) > 0) {
             mx_history_replenish(&ush->hist, line);

@@ -2,7 +2,7 @@
 
 static void end_reading(pid_t pid, int *pipe) {
     int status;
-    
+
     close(pipe[0]);
     waitpid(pid, &status, WUNTRACED);
     errno = 0;
@@ -29,7 +29,7 @@ static char *read_output(pid_t pid, int *pipe) {
 static char *process_output(char *str, int (*parse_p)(char *, t_ush *),
                             t_ush *ush) {
     pid_t pid;
-    int p[2];  // pipe
+    int p[2];
 
     if (!mx_check_parse(str))
         return NULL;
@@ -53,18 +53,18 @@ static char *process_output(char *str, int (*parse_p)(char *, t_ush *),
 }
 
 char *mx_get_subst_outputs(char *str, t_ush *ush) {
-    char **subcommands = {NULL};
+    char **sub_commands = {NULL};
     char *sum_output = NULL;
 
-    if (mx_semicolon_split(str, ush, &subcommands) == -1) {  // parse errors
+    if (mx_semicolon_split(str, ush, &sub_commands) == -1) {
         mx_quit_parse(NULL, ush, 1, NULL);
         return NULL;
     }
-    for (char **s = subcommands; *s; s++) {
-        sum_output = mx_cooljoin(sum_output, process_output(*s,
-                                 mx_parse_exec, ush));
+    for (char **s = sub_commands; *s; s++) {
+        sum_output = mx_join(sum_output, process_output(*s,
+                                                        mx_parse_exec, ush));
     }
-    mx_del_strarr(&subcommands);
+    mx_del_strarr(&sub_commands);
     mx_quit_parse(NULL, ush, -1, NULL);
     return sum_output;
 }

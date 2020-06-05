@@ -6,12 +6,12 @@ int ush_pwd(char **args) {
 
     if (args[1] != NULL && args[1][0] == '-') {
         if (mx_get_char_index(args[1], 'P') > -1) {
-            write(1, pwd, strlen(pwd));
+            write(1, pwd, mx_strlen(pwd));
             write(1, "\n", 1);
             return 2;
         }
     }
-    write(1, getenv("PWD"), strlen(getenv("PWD")));
+    write(1, getenv("PWD"), mx_strlen(getenv("PWD")));
     write(1, "\n", 1);
     return 2;
 }
