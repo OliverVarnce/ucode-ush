@@ -3,7 +3,7 @@
 void free_processes(t_processes **processes) {
     t_processes *j = *processes;
     while(j) {
-        t_processes *hren = j->next;
+        t_processes *proc = j->next;
         if (j->data != NULL) 
             mx_del_strarr(&j->data);
         mx_strdel(&j->pwd);
@@ -13,6 +13,6 @@ void free_processes(t_processes **processes) {
 
         free(j);
         j = NULL;
-        j = hren;
+        j = proc;
     }
 }

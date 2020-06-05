@@ -190,7 +190,7 @@ int ush_exit(char **args, t_ush *ush);
 int ush_pwd(char **args);
 bool mx_opencheck(char *dirname, t_cd *in);
 char *mx_read_stream(t_history *h);
-void free_list(t_history **list);
+void free_history(t_history **list);
 void free_list2(t_list **list);
 int ush_which(char **args);
 int mx_empty_proc(char **args, t_processes **processes);

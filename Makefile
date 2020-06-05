@@ -34,8 +34,8 @@ SRC = $(addprefix $(SRC_DIR)/,\
       errhandlers/mx_printerror.c \
       history/history.c \
       memory/free_processes.c \
+      memory/free_history.c \
       memory/free_list.c \
-      memory/free_list2.c \
       memory/free_node.c \
       parsers/parse.c \
       parsers/parse_backquote.c \
@@ -93,8 +93,8 @@ OBJ = add_proc.o \
       mx_printerror.o \
       history.o \
       free_processes.o \
+      free_history.o \
       free_list.o \
-      free_list2.o \
       free_node.o \
       parse.o \
       parse_backquote.o \

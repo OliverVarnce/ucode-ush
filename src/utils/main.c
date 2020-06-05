@@ -60,7 +60,7 @@ int main() {
         mx_setup_term(ush);
         start_loop(ush);
         ex = ush->exit;
-        free_list(&ush->hist);
+        free_history(&ush->hist);
         exit(ex);
     }
     else
