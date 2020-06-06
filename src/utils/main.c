@@ -7,9 +7,9 @@ static void start_loop(t_ush *ush) {
 
     for (; CANON_OPTS;) {
         mx_enable_canon();
-        write(1, "u$h> ", mx_strlen("u$h> "));
+        mx_printstr("u$h> ");
         line = mx_read_stream(ush->hist);
-        write (1, "\n", 1);
+        mx_printstr("\n");
         if (line != NULL && mx_strlen(line) > 0) {
             mx_history_replenish(&ush->hist, line);
             mx_disable_canon();

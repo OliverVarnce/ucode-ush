@@ -74,8 +74,9 @@ int ush_env(char **args, t_processes **processes) {
         unsetenv(*args);
         args++;
     }
-    else for ( ; *args && mx_get_char_index(*args, '=') > -1; args++)
-        putenv(*args);
+    else
+        for ( ; *args && mx_get_char_index(*args, '=') > -1; args++)
+            putenv(*args);
     if (*args)
         status = mx_empty_proc(args, processes);
     else for (int i = 0; environ[i]; i++)

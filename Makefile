@@ -31,6 +31,7 @@ SRC = $(addprefix $(SRC_DIR)/,\
       builtins/ush_pwd.c \
       builtins/ush_unset.c \
       builtins/ush_which.c \
+      builtins/print_history.c \
       errhandlers/mx_printerror.c \
       history/history.c \
       memory/free_processes.c \
@@ -92,6 +93,7 @@ OBJ = add_proc.o \
       ush_which.o \
       mx_printerror.o \
       history.o \
+      print_history.o \
       free_processes.o \
       free_history.o \
       free_list.o \

@@ -9,9 +9,9 @@ static void to_body(t_processes **j, char **args, pid_t pid) {
                 pid, getenv("PWD"));
             break;
         }
-        else if (proc->next->num == proc->num + 1) //до последней
+        else if (proc->next->num == proc->num + 1)
             proc = proc->next;
-        else { //пропущеный номер
+        else {
             t_processes *tmp = proc->next;
             proc->next = mx_create_proc(args, proc->num + 1,
                 pid, getenv("PWD"));
@@ -24,7 +24,7 @@ static void to_body(t_processes **j, char **args, pid_t pid) {
 void add_proc(t_processes **j, char **args, pid_t pid) {
     t_processes *proc = *j;
 
-    if (proc->data == NULL && proc->num == -1) { //если пустой
+    if (proc->data == NULL && proc->num == -1) {
         proc->data = mx_copy_dub_arr(args);
         proc->num = 1;
         proc->pid = pid;
