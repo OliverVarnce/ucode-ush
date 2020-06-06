@@ -3,7 +3,7 @@
 static char *delete_button(char *line) {
     char *res = mx_strnew(mx_strlen(line) - 1);
 
-    write(1, "\b \b", 3);
+    mx_printstr("\b \b");
     strncpy(res, line, mx_strlen(line) - 1);
     free(line);
     return res;
@@ -19,7 +19,7 @@ static char *delete_check(char *line, int buf, int *x) {
         index = mx_strlen(line) - *x;
         tmp = mx_strpart(line, index);
         for (int i = *x; i > 0; i--)
-            write(1, " ", 1);
+            mx_printstr(" ");
         for (int i = 0; i <= *x; i++)
             line = delete_button(line);
         mx_printstr(tmp);
@@ -39,7 +39,7 @@ static char *edit_line(char *line, int *x, char *ch) {
     index = mx_strlen(line) - *x;
     tmp = mx_strpart(line, index);
     for (int i = *x; i > 0; i--)
-        write(1, " ", 1);
+        mx_printstr(" ");
     for (int i = 0; i < *x; i++)
         line = delete_button(line);
     printf("%s%s", ch, tmp);
@@ -59,7 +59,7 @@ static char *delete_but(char *line, int *x) {
     index = mx_strlen(line) - *x;
     tmp = mx_strpart(line, index + 1);
     for (int i = 0; i < *x; i++)
-        write(1, " ", 1);
+        mx_printstr(" ");
     for (int i = 0; i < *x; i++)
         line = delete_button(line);
     printf("%s", tmp);
@@ -84,7 +84,7 @@ char *mx_stream(int buf, char *line, int *x) {
         if (*x != 0)
             line = edit_line(line, x, ch);
         else {
-            write(1, ch, 4);
+            mx_printstr(ch);
             line = mx_delit_fre(line, ch);
         }
     }

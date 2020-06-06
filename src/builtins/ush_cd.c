@@ -2,15 +2,15 @@
 
 static int false_cd(char *name, t_cd *num) {
     if (num->error == 1)
-        write(2, "cd: no such file or directory: ", 31);
+        mx_printerr("cd: no such file or directory: ");
     else if (num->error  == 2)
-        write(2, "cd: not a directory: ", 21);
+        mx_printerr("cd: not a directory: ");
     else if (num->error  == 3)
-        write(2, "cd: string not in pwd: ", 23);
+        mx_printerr("cd: string not in pwd: ");
     else if (num->error  == 4)
-        write(2, "cd: permission denied: ", 23);
-    write(2, name, mx_strlen(name));
-    write(2, "\n", 1);
+        mx_printerr("cd: permission denied: ");
+    mx_printerr(name);
+    mx_printerr("\n");
     free(num);
     errno = 0;
     // system("leaks -q ush");
@@ -50,7 +50,6 @@ int env_work(char *newpwd, char *pwd, char *args, t_cd *in) {
     free(pwd);
     errno = 0;
     free(in);
-    // system("leaks -q ush");
     return 2;
 }
 
@@ -63,7 +62,6 @@ char *prosto_path(char *newpwd, char *m, t_cd *in) {
     else 
         newpwd = mx_delit_fre(newpwd, "/");
     newpwd = mx_delit_fre(newpwd, m);
-    // printf("%s\n", newpwd);
     if (!mx_opencheck(newpwd, in)) {
         free(newpwd);
         return NULL;
@@ -89,7 +87,6 @@ char *gogo(char *newpwd, char **m, t_cd *in) {
                 return newpwd;
             }
         }
-        // printf("%s\n", newpwd);
     }
     mx_del_strarr(&m);
     return newpwd;
