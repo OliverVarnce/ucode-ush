@@ -217,6 +217,7 @@ int ush_processes(char **args, t_processes **processes);
 char *mx_delit_fre(char *src, char *d);
 char *mx_join(char *src, char *d);
 int mx_strcmp_null(const char *s1, const char *s2);
+int mx_print_history(t_ush *ush);
 int env_print(void);
 
 #endif
