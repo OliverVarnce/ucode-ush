@@ -1,24 +1,44 @@
 #include "ush.h"
+static void to_negative(t_processes **j, char p) {
+    t_processes *proc = *j;
+    int neg = -1;
+
+    if (p == '+') {
+        for ( ; proc; proc=proc->next) {
+            if (proc->sign == '-') {
+                proc->sign = '+';
+                neg = proc->index - 1;
+            }
+            if (proc->index == neg)
+                proc->sign = '-';
+        }
+    }
+    if (p == '-') {
+        for ( ; proc; proc = proc->next) {
+            if (proc->sign == '+') {
+                neg = proc->index - 1;
+            }
+            if (proc->index == neg)
+                proc->sign = '-';
+        }
+    }
+}
 
 void reload(pid_t pid, char **args, t_processes **processes) {
     int status;
-    pid_t tmp;
-    pid_t wait;
-    
-    tmp = fork();
-    if (tmp == 0) {
-        kill(pid, SIGCONT);
+
+    tcsetpgrp(0, pid);
+    tcsetpgrp(1, pid);
+    kill(-pid, SIGCONT);
+    waitpid(-pid, &status, WUNTRACED);
+    tcsetpgrp(0, getpid());
+    tcsetpgrp(1, getpid());
+    if (WIFSTOPPED(status)) {
+        mx_add_proc(processes, args, pid);
     }
-    else {
-        wait = waitpid(tmp, &status, WUNTRACED);
-        while (!WIFEXITED(status) && !WIFSIGNALED(status)) {
-            if (WIFSTOPPED(status)) {
-                add_proc(processes, args, pid);
-                break;
-            }
-            wait = waitpid(tmp, &status, WUNTRACED);
-        }
-    }
+    if (args != NULL)
+        mx_del_strarr(&args);
+    errno = 0;
 }
 
 static void del_body(t_processes **processes) {
@@ -29,31 +49,44 @@ static void del_body(t_processes **processes) {
     j->next = NULL;
     j->next = del->next;
     del->next = NULL;
-    free_processes(&del);
+    mx_free_processes(&del);
 }
 
 
-void del_proc(t_processes **processes, int flag) {
+void mx_del_proc(t_processes **processes, int flag) {
     t_processes *j = *processes;
     t_processes *del = j->next;
-    
-    if (flag == 1) { //голова
-        //kill(j->pid, SIGCONT);
-        reload(j->pid, j->data, processes);
-        if (j->next == NULL) { //когда один остается
-            if (j->data != NULL) 
+    char **data = NULL;
+    int pid = j->pid;
+    char sign = '\0';
+
+    if (flag == 1) {
+        data = mx_copy_dub_arr(j->data);
+        if (j->next == NULL) {
+            if (j->data != NULL)
                 mx_del_strarr(&j->data);
             mx_strdel(&j->pwd);
             j->data = NULL;
             j->num = -1;
             j->pid = -1;
-            return ;
+            j->index = 0;
+            sign = j->sign;
+            j->sign = '\0';
+            to_negative(processes, sign);
+            reload(pid, data, &j);
         }
-        j->next = NULL;
-        free_processes(&j);
-        *processes = del;
+        else {
+            j->next = NULL;
+            sign = j->sign;
+            mx_printchar(sign);
+            mx_free_processes(&j);
+            *processes = del;
+            to_negative(processes, sign);
+            reload(pid, data, processes);
+        }
     }
-    if (flag == 2) { //тело
+    if (flag == 2) {
         del_body(processes);
     }
+
 }

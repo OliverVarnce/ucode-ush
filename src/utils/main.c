@@ -5,6 +5,7 @@ static void start_loop(t_ush *ush) {
     ush->hist = NULL;
     ush->env_set = mx_create_node(NULL);
 
+    mx_sig_listener();
     for (; CANON_OPTS;) {
         mx_enable_canon();
         mx_printstr("u$h> ");
@@ -19,8 +20,9 @@ static void start_loop(t_ush *ush) {
         if (ush->exit >= 0)
             break;
     }
+    mx_sig_def();
     tcsetattr(0, TCSAFLUSH, &ush->savetty);
-    free_list2(&ush->env_set);
+    mx_free_list(&ush->env_set);
 }
 
 static void pipe_call(t_ush *ush) {
@@ -28,12 +30,14 @@ static void pipe_call(t_ush *ush) {
     char *line = NULL;
     char *ch = NULL;
 
+    ush->env_set = mx_create_node(NULL);
     while (read(STDIN_FILENO, &buf, 3) > 0) {
         ch = (char *)(&buf);
         line = mx_delit_fre(line, ch);
         buf = 0;
     }
     mx_parse(line, ush);
+    mx_free_list(&ush->env_set);
 }
 
 static void set_slvlup() {
@@ -60,12 +64,12 @@ int main() {
         mx_setup_term(ush);
         start_loop(ush);
         ex = ush->exit;
-        free_history(&ush->hist);
+        mx_free_history(&ush->hist);
         exit(ex);
     }
     else
         pipe_call(ush);
-    free_processes(&ush->processes);
+    mx_free_processes(&ush->processes);
     free(ush);
     return 0;
 }

@@ -1,6 +1,6 @@
 #include "ush.h"
 
-void free_list2(t_list **list) {
+void mx_free_list(t_list **list) {
     t_list *tmp = *list;
     while(tmp) {
         t_list *lst = tmp->next;

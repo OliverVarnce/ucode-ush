@@ -21,10 +21,10 @@ int builtin(char **args, t_ush *ush) {
         return ush_fg(args, &ush->processes);
     if (!mx_strcmp(args[0], "processes"))
         return ush_processes(args, &ush->processes);
-    if (!mx_strcmp(args[0], "false"))
-        return 1;
-    if (!mx_strcmp(args[0], "true"))
-        return 0;
+//    if (!mx_strcmp(args[0], "false"))
+//        return 1;
+//    if (!mx_strcmp(args[0], "true"))
+//        return 0;
     if (!mx_strcmp(args[0], "history"))
         return mx_print_history(ush);
     return -1;

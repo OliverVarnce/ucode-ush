@@ -5,7 +5,7 @@ static bool del_part(t_processes **processes, int num) {
 
     while(j) { 
         if(j->next->num == num) {
-            del_proc(&j, 2);
+            mx_del_proc(&j, 2);
             return true;
         }
         j = j->next;
@@ -22,7 +22,7 @@ bool proc_num_find(char *args, t_processes **processes) {
     bool flag = true;
 
     if(j->num == num)
-        del_proc(processes, 1);
+        mx_del_proc(processes, 1);
     else if (j->num > 0 && j->next != NULL) //остальное
         flag = del_part(processes, num);
     else 

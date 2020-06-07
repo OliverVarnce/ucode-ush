@@ -1,6 +1,6 @@
 #include "ush.h"
 
-void free_history(t_history **list) {
+void mx_free_history(t_history **list) {
     t_history *tmp = *list;
     while(tmp) {
         t_history *history = tmp->next;

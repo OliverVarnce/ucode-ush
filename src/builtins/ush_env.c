@@ -18,9 +18,9 @@ static int usage(int f, char *arg) {
         write(2, "usage: env [-iu] [name=value ...] "
                 "[utility [argument ...]]\n", 58);
     else {
-        write(2, "env: '", 6);
-        write(2, arg, mx_strlen(arg));
-        write(2, "': No such file or directory\n", 29);
+        mx_printerr("env: '");
+        mx_printerr(arg);
+        mx_printerr("': No such file or directory\n");
         exit(0);
     }
 	return 1;
@@ -53,6 +53,10 @@ static int check_args(char ***args, t_env *env, char ***environ) {
             (*args)++;
         }
         else if (mx_get_char_index(**args, 'u')) {
+            env->flag_u = 1;
+            (*args)++;
+        }
+        else if (mx_get_char_index(**args, 'P')) {
             env->flag_u = 1;
             (*args)++;
         }
