@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static void unset_var(t_list **env_set, int count, t_list **b) {
+static void uns_var(t_list **env_set, int count, t_list **b) {
     t_list *front = *env_set;
     t_list *back = *b;
 
@@ -12,7 +12,7 @@ static void unset_var(t_list **env_set, int count, t_list **b) {
         }
         else
             mx_pop_frontf(env_set);
-        return ;
+        return;
     }
     for (int i = 0; i < count - 1; i++)
         front = front->next;
@@ -21,13 +21,13 @@ static void unset_var(t_list **env_set, int count, t_list **b) {
     mx_free_list(&back);
 }
 
-static bool unset_help(t_list **env, t_list **n, int count, char **tmp) {
+static bool coi(t_list **env, t_list **n, int count, char **tmp) {
     char **sub = NULL;
     t_list *f = *n;
 
     sub =  mx_strsplit(f->data, '=');
     if (mx_strcmp_null(sub[0], tmp[0]) == 0) {
-        unset_var(env, count, &f);
+        uns_var(env, count, &f);
         unsetenv(tmp[0]);
         mx_del_strarr(&sub);
         return true;
@@ -36,7 +36,7 @@ static bool unset_help(t_list **env, t_list **n, int count, char **tmp) {
     return false;
 }
 
-int mx_unset(char **args, t_list **env_set) {
+int ush_unset(char **args, t_list **env_set) {
     char **tmp = NULL;
     int count;
     t_list *f = *env_set;
@@ -47,7 +47,7 @@ int mx_unset(char **args, t_list **env_set) {
         if (f != NULL && f->data != NULL) {
             for ( ; f; f = f->next, count++) {
                 if (mx_get_substr_index(f->data, tmp[0]) >= 0) {
-                    if (unset_help(env_set, &f, count, tmp))
+                    if (coi(env_set, &f, count, tmp))
                         break ;
                 } 
             }

@@ -67,6 +67,8 @@ SRC = $(addprefix $(SRC_DIR)/,\
       utils/mx_setup_term.c \
       utils/mx_strpart.c \
       utils/mx_strcmp_null.c \
+      utils/mx_sig_listener.c \
+      utils/mx_sig_def.c \
       utils/mx_name_search.c \
       utils/mx_opencheck.c \
       utils/mx_empty_proc.c)
@@ -129,11 +131,13 @@ OBJ = mx_add_proc.o \
       mx_strcmp_null.o \
       mx_name_search.o \
       mx_opencheck.o \
-      mx_empty_proc.o
+      mx_empty_proc.o \
+      mx_sig_listener.o \
+      mx_sig_def.o
 
 CC = clang
 
-CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
+CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic -g3 -fsanitize=address
 
 all : install
 

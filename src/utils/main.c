@@ -5,6 +5,7 @@ static void start_loop(t_ush *ush) {
     ush->hist = NULL;
     ush->env_set = mx_create_node(NULL);
 
+    mx_sig_listener();
     for (; CANON_OPTS;) {
         mx_enable_canon();
         mx_printstr("u$h> ");
@@ -14,11 +15,12 @@ static void start_loop(t_ush *ush) {
             mx_history_replenish(&ush->hist, line);
             mx_disable_canon();
             mx_parse(line, ush);
-            system("leaks -q ush");
+            //system("leaks -q ush");
         }
         if (ush->exit >= 0)
             break;
     }
+    mx_sig_def();
     tcsetattr(0, TCSAFLUSH, &ush->savetty);
     mx_free_list(&ush->env_set);
 }
@@ -28,12 +30,14 @@ static void pipe_call(t_ush *ush) {
     char *line = NULL;
     char *ch = NULL;
 
+    ush->env_set = mx_create_node(NULL);
     while (read(STDIN_FILENO, &buf, 3) > 0) {
         ch = (char *)(&buf);
         line = mx_delit_fre(line, ch);
         buf = 0;
     }
     mx_parse(line, ush);
+    mx_free_list(&ush->env_set);
 }
 
 static void set_slvlup() {

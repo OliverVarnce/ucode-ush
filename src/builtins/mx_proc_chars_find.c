@@ -6,7 +6,7 @@ static bool cur_proc(char *tmp , t_processes **processes){
     if (mx_strcmp_null(tmp, "%") == 0 ||
         mx_strcmp_null(tmp, "+") == 0 || tmp == NULL) { 
         if (j->data == NULL && j->num == -1) {
-            mx_printstr("fg: no current proc\n");
+            write (1, "fg: no current proc\n", 19);
             return false;
         }
         else if(j->next == NULL) //голова
@@ -25,7 +25,7 @@ static bool prev_proc(char *tmp , t_processes **processes){
 
     if (mx_strcmp_null(tmp, "-") == 0) { // previous proc предпоследний
         if (j->next == NULL) {
-            mx_printstr("fg: no previous proc\n");
+            write (1, "fg: no previous proc\n", 20);
             return false;
         }
         else if(j->next->next == NULL)
@@ -62,8 +62,8 @@ static bool name_proc(char *tmp , t_processes **processes){
     return true;
 }
 
-bool mx_proc_chars_find(char *args, t_processes **processes) {
-    char *tmp = mx_cut_str_forproc(args);
+bool proc_chars_find(char *args, t_processes **processes) {
+    char *tmp = cut_str_forproc(args);
     bool flag = true;
 
     if (!cur_proc(tmp, processes))

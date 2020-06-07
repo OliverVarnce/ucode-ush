@@ -1,6 +1,6 @@
 #include "ush.h"
 
-char *mx_cut_str_forproc(char *args) {
+char *cut_str_forproc(char *args) {
     char *res = NULL;
 
     if (args == NULL || args[0] == '\0') //%

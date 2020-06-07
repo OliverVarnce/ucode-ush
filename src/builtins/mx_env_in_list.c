@@ -9,7 +9,7 @@ static bool change_var(t_list **env_set, char *src) {
         return true;
 
     t_var = mx_strsplit(src, '=');
-    for( ; tmp; tmp = tmp->next) { //заменить
+    for( ; tmp; tmp = tmp->next) {
         if (mx_get_substr_index(tmp->data, t_var[0]) >= 0) {
             t_set = mx_strsplit(tmp->data, '=');
             if (mx_strcmp_null(t_set[0], t_var[0]) == 0) { //t_var[1] != NULL
@@ -28,18 +28,20 @@ static bool change_var(t_list **env_set, char *src) {
 
 static bool f_case(char ***v) {
     char **var = *v;
-    mx_printstr("export: not valid in this context: ");
-    mx_printstr(var[0]);
-    mx_printstr("\n");
+    write(1, "export: not valid in this context: ",
+        mx_strlen("export: not valid in this context: "));
+    write(1, var[0], mx_strlen(var[0]));
+    write(1, "\n", 1);
     mx_del_strarr(v);
     return false;
 }
 
 static bool s_case(char ***v) {
     char **var = *v;
-    mx_printstr("export: not an identifier: ");
-    mx_printstr(var[0]);
-    mx_printstr("\n");
+    write(1, "export: not an identifier: ",
+        mx_strlen("export: not an identifier: "));
+    write(1, var[0], mx_strlen(var[0]));
+    write(1, "\n", 1);
     mx_del_strarr(v);
     return false;
 }
@@ -55,7 +57,7 @@ static bool var_check(char *src) {
     }
     else if (mx_isdigit(var[0][0]))
         return s_case(&var);
-    else 
+    else
         return f_case(&var);
     mx_del_strarr(&var);
     return true;

@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static char **env_cpy(char **environ) {
+static char **env_copy(char **environ) {
     char **res = NULL;
     int len = 0;
 
@@ -26,7 +26,7 @@ static int usage(int f, char *arg) {
 	return 1;
 }
 
-static void env_run(char ***environ, t_env *env) {
+static void e_work(char ***environ, t_env *env) {
     char **m = NULL;
 
     if (env->flag_i != 1) {
@@ -44,7 +44,7 @@ static void env_run(char ***environ, t_env *env) {
     free(env);
 }
 
-static int check_arg(char ***args, t_env *env, char ***environ) {
+static int check_args(char ***args, t_env *env, char ***environ) {
     if ((*args)++ && mx_get_char_index(**args, '-') == 0) {
         if (mx_get_char_index(**args, 'i') > 0) {
             env->flag_i = 1;
@@ -56,19 +56,23 @@ static int check_arg(char ***args, t_env *env, char ***environ) {
             env->flag_u = 1;
             (*args)++;
         }
+        else if (mx_get_char_index(**args, 'P')) {
+            env->flag_P = 1;
+            (*args)++;
+        }
         else if (mx_get_char_index(**args, '-') != 1)
             return usage(1, NULL);
     }
     return 0;
 }
 
-int mx_env(char **args, t_processes **processes) {
+int ush_env(char **args, t_processes **processes) {
     extern char **environ;
     t_env *env = (t_env *)malloc(7 * sizeof(t_env));
     int status = 0;
 
-    env->n = env_cpy(environ);
-    if (check_arg(&args, env, &environ) > 0)
+    env->n = env_copy(environ);
+    if (check_args(&args, env, &environ) > 0)
         return 1;
     if (env->flag_i != 1 && env->flag_u == 1) {
         unsetenv(*args);
@@ -79,9 +83,10 @@ int mx_env(char **args, t_processes **processes) {
             putenv(*args);
     if (*args)
         status = mx_empty_proc(args, processes);
-    else for (int i = 0; environ[i]; i++)
-        printf("%s\n", environ[i]);
-    env_run(&environ, env);
+    else
+        for (int i = 0; environ[i]; i++)
+            printf("%s\n", environ[i]);
+    e_work(&environ, env);
     if (status == -1)
         return usage(2, *args);
     return 0;

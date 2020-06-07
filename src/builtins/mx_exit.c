@@ -1,9 +1,8 @@
 #include "ush.h"
 
-
-int mx_exit(char **args, t_ush *ush){
+int ush_exit(char **args, t_ush *ush){
     if (args[1] == NULL)
-        ush->exit = 0;
+        ush->exit = ush->last_return;
     else if (args[2]) {
        mx_printerr("exit: too many arguments\n");
         return 1;

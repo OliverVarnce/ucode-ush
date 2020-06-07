@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static int to_access(char *args, int flag) {
+static int check_access(char *args, int flag) {
     char *tmp = NULL;
     int f = 1;
     char *path = getenv("PATH");
@@ -10,7 +10,7 @@ static int to_access(char *args, int flag) {
     for (int i = 0; m[i]; i++) {
         tmp = mx_strjoin(m[i], "/");
         tmp = mx_delit_fre(tmp, args);
-        if (to_access(tmp, F_OK) == 0) {
+        if (access(tmp, F_OK) == 0) {
             flag != 3 ? printf("%s\n", tmp) : 0;
             f = 0;
             if (flag == 0)
@@ -23,7 +23,7 @@ static int to_access(char *args, int flag) {
     return f;
 }
 
-static int builtin_check(char *args) {
+static int built_check(char *args) {
     char *built[] = {"cd", "pwd", "exit", "which", "env", "fg", 
         "processes", "export", "unset", "false", "true", NULL};
     
@@ -36,7 +36,7 @@ static int builtin_check(char *args) {
     return 1;
 }
 
-int mx_which(char **args) {
+int ush_which(char **args) {
     int f = 1;
     int flag = 0;
     
@@ -48,11 +48,11 @@ int mx_which(char **args) {
     }
     for (args++; *args; args++) {
         f = 0;
-        if (builtin_check(*args)) {
-            f = to_access(*args, flag);
+        if (built_check(*args)) {
+            f = check_access(*args, flag);
             if (f == 1) {
                 mx_printstr(*args);
-                mx_printstr(" not found\n");
+                write(1, " not found\n", 11);
             }
         }
     }

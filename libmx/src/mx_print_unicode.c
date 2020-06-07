@@ -3,19 +3,19 @@
 void mx_print_unicode(wchar_t c) {
     char out[4];
 
-    if (c < 0x80) { // < 128
+    if (c < 0x80) {
         out[0] = (c >> 0 & 0x7F /* 127 */) | 0x00;
         out[1] = 0;
         out[2] = 0;
         out[3] = 0;
     }
-    else if (c < 0x0800) { // < 2048
+    else if (c < 0x0800) {
         out[0] = (c >> 6 & 0x1F) | 0xC0;
         out[1] = (c >> 0 & 0x3F) | 0x80;
         out[2] = 0;
         out[3] = 0;
     }
-    else if (c < 0x010000) { // < 65536
+    else if (c < 0x010000) {
         out[0] = (c >> 12 & 0x0F) | 0xE0;
         out[1] = (c >> 6 & 0x3F) | 0x80;
         out[2] = (c >> 0 & 0x3F) | 0x80;

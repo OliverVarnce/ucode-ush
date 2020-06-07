@@ -35,7 +35,9 @@
 
 typedef struct s_processes {
     int num;
+    char sign;
     pid_t pid;
+    int index;
     char **data;
     char *pwd;
     struct s_processes *next;
@@ -57,6 +59,7 @@ typedef struct s_history {
 typedef struct s_env {
     int flag_i;
     int flag_u;
+    int flag_P;
     char **n;
     char *clear[1];
 }              t_env;
@@ -166,7 +169,7 @@ char *mx_get_subst_outputs(char *str, t_ush *ush);
 t_range *mx_is_inside_of(int i, enum e_quote type, t_frmt_lst **arr);
 int mx_handle_substitutions(char **str, t_frmt_lst **arr, t_ush *ush);
 int mx_tilde_expansion(char **argv);
-int mx_echo(char **argv);
+int mx_ush_echo(char **argv);
 char mx_getopt(int argc, char **argv, char *optstring, int *optind);
 void mx_enable_canon(void);
 void mx_disable_canon(void);
@@ -184,40 +187,43 @@ t_processes *mx_create_proc(char **data, int num, pid_t pid, char *pwd);
 char **mx_copy_dub_arr(char **args);
 void mx_free_processes(t_processes **processes);
 void mx_history_replenish(t_history **hs, char *data);
-int mx_cd(char **args);
-int mx_env(char **args, t_processes **processes);
-int mx_exit(char **args, t_ush *ush);
-int mx_pwd(char **args);
+int ush_cd(char **args);
+int ush_env(char **args, t_processes **processes);
+int ush_exit(char **args, t_ush *ush);
+int ush_pwd(char **args);
 bool mx_opencheck(char *dirname, t_cd *in);
 char *mx_read_stream(t_history *h);
 void mx_free_history(t_history **list);
 void mx_free_list(t_list **list);
-int mx_which(char **args);
+int ush_which(char **args);
 int mx_empty_proc(char **args, t_processes **processes);
 int mx_parse(char *line, t_ush *ush);
-int mx_detect_builds(char **args, t_ush *ush);
+int detect_builds(char **args, t_ush *ush);
 char *mx_strpart(char *str, int index);
 char *mx_stream(int buf, char *line, int *x);
-void mx_free_node(t_history *node);
-int mx_detect_builds(char **args, t_ush *ush);
+void free_node(t_history *node);
+int detect_builds(char **args, t_ush *ush);
 
 int mx_detect_exp(char **proc, t_history *start_h, t_list **env_set);
 void mx_env_in_list(t_list **env_set, char *src);
-int mx_export(char **args, t_list **env_set);
-int mx_unset(char **args, t_list **env_set);
-int mx_fg(char **args, t_processes **processes);
+int ush_export(char **args, t_list **env_set);
+int ush_unset(char **args, t_list **env_set);
+int ush_fg(char **args, t_processes **processes);
 int mx_printerror(int errnum, char *name, char *args, char *str);
 
 void mx_del_proc(t_processes **processes, int flag);
-char *mx_cut_str_forproc(char *args);
-bool mx_proc_num_find(char *args, t_processes **processes);
-bool mx_proc_chars_find(char *args, t_processes **processes);
+char *cut_str_forproc(char *args);
+bool proc_num_find(char *args, t_processes **processes);
+bool proc_chars_find(char *args, t_processes **processes);
 int mx_name_search(char *tmp , t_processes *processes);
-int mx_ush_processes(char **args, t_processes **processes);
+int ush_processes(char **args, t_processes **processes);
 char *mx_delit_fre(char *src, char *d);
 char *mx_join(char *src, char *d);
 int mx_strcmp_null(const char *s1, const char *s2);
 int mx_print_history(t_ush *ush);
 int mx_env_print(void);
+void mx_sig_listener();
+void mx_sig_def();
+int mx_check_max(t_processes *j);
 
 #endif
