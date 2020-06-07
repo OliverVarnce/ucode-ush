@@ -1,23 +1,23 @@
 #include "ush.h"
 
-static int false_cd(char *name, t_cd *num) {
+static int wrong_cd(char *name, t_cd *num) {
     if (num->error == 1)
-        write(2, "cd: no such file or directory: ", 31);
+        mx_printerr("cd: no such file or directory: ");
     else if (num->error  == 2)
-        write(2, "cd: not a directory: ", 21);
+        mx_printerr("cd: not a directory: ");
     else if (num->error  == 3)
-        write(2, "cd: string not in pwd: ", 23);
+        mx_printerr("cd: string not in pwd: ");
     else if (num->error  == 4)
-        write(2, "cd: permission denied: ", 23);
-    write(2, name, mx_strlen(name));
-    write(2, "\n", 1);
+        mx_printerr("cd: permission denied: ");
+    mx_printerr(name);
+    mx_printerr("\n");
     free(num);
     errno = 0;
     // system("leaks -q ush");
     return 1;
 }
 
-char *dotdot(char *newpwd) {
+char *mx_dot_back(char *newpwd) {
     char **p = mx_strsplit(newpwd, '/');
     char *tmp = NULL;
 
@@ -36,11 +36,11 @@ char *dotdot(char *newpwd) {
     return newpwd;
 }
 
-int env_work(char *newpwd, char *pwd, char *args, t_cd *in) {
+int mx_env_in_run(char *newpwd, char *pwd, char *args, t_cd *in) {
     if (chdir(newpwd) == -1) {
         free(pwd);
         in->error = 1;
-        return false_cd(args, in);
+        return wrong_cd(args, in);
     }
     if (in->flag_P == 1)
         setenv("PWD", getcwd(NULL, 0), 1);
@@ -54,7 +54,7 @@ int env_work(char *newpwd, char *pwd, char *args, t_cd *in) {
     return 2;
 }
 
-char *prosto_path(char *newpwd, char *m, t_cd *in) {
+char *mx_basic_path(char *newpwd, char *m, t_cd *in) {
     struct stat inf;
 
     lstat(newpwd, &inf);
@@ -71,18 +71,18 @@ char *prosto_path(char *newpwd, char *m, t_cd *in) {
     return newpwd;
 }
 
-char *gogo(char *newpwd, char **m, t_cd *in) {
+char *mx_run(char *newpwd, char **m, t_cd *in) {
     for (int j = 0; m[j]; j++) {
         if (!mx_strcmp(m[j], "~") && j == 0)
             continue;
         else if (!mx_strcmp(m[j], "..") && newpwd != NULL &&
             mx_strcmp(newpwd, "/") != 0) {
-            newpwd = dotdot(newpwd);
+            newpwd = mx_dot_back(newpwd);
         }
         else if (!mx_strcmp(m[j], "."))
             continue;
         else if (mx_strcmp(m[j], "..") != 0) {
-            newpwd = prosto_path(newpwd, m[j], in);
+            newpwd = mx_basic_path(newpwd, m[j], in);
             if (in->error > 0) {
                 mx_del_strarr(&m);
                 errno = 0;
@@ -94,7 +94,7 @@ char *gogo(char *newpwd, char **m, t_cd *in) {
     mx_del_strarr(&m);
     return newpwd;
 }
-char *proverka(char **args, int f, char *pwd) {
+char *mx_check(char **args, int f, char *pwd) {
     char *newpwd = NULL;
 
     if (args[f][0] == '~')
@@ -104,38 +104,38 @@ char *proverka(char **args, int f, char *pwd) {
     return newpwd;
 }
 
-int tak_syak(char **args, char *pwd, t_cd *in) {
+int mx_env_return(char **args, char *pwd, t_cd *in) {
     if (args[1] == NULL || !mx_strcmp(args[in->f], "~"))
-        return env_work(getenv("HOME"), pwd, args[0], in);
+        return mx_env_in_run(getenv("HOME"), pwd, args[0], in);
     if (!mx_strcmp(args[in->f], "-") || !mx_strcmp(args[in->f], "~-"))
-        return env_work(getenv("OLDPWD"), pwd, args[in->f], in);
+        return mx_env_in_run(getenv("OLDPWD"), pwd, args[in->f], in);
     if (!mx_strcmp(args[in->f], "~+"))
-        return env_work(getenv("PWD"), pwd, args[in->f], in);
+        return mx_env_in_run(getenv("PWD"), pwd, args[in->f], in);
     if (mx_strcmp(args[in->f], "/") == 0)
-        return env_work("/", pwd, args[in->f], in);
+        return mx_env_in_run("/", pwd, args[in->f], in);
     return 0;
 }
 
-int ush_cd(char **args) {
+int mx_cd(char **args) {
     char *pwd = mx_strdup(getenv("PWD"));
     char **m = NULL;
     char *newpwd = NULL;
     t_cd *in = (t_cd *)malloc(sizeof(t_cd) * 4);
     
     in->f = 1;
-    if (tak_syak(args, pwd, in) > 0)
+    if (mx_env_return(args, pwd, in) > 0)
         return 2;
     (args[1][0] == '-') ? in->f = 2 : 0;
     in->f == 2 && mx_get_char_index(args[1], 's') > -1 ? in->flag_s = 2 : 0;
     in->f == 2 && mx_get_char_index(args[1], 'P') > -1 ? in->flag_P = 1 : 0;
-    newpwd = proverka(args, in->f, pwd);
+    newpwd = mx_check(args, in->f, pwd);
     m = mx_strsplit(args[in->f], '/');
-    newpwd = gogo(newpwd, m, in);
+    newpwd = mx_run(newpwd, m, in);
     if (newpwd == NULL) {
         free(pwd);
-        return false_cd(args[in->f], in);
+        return wrong_cd(args[in->f], in);
     }
-    env_work(newpwd, pwd, args[in->f], in);
+    mx_env_in_run(newpwd, pwd, args[in->f], in);
     free(newpwd);
     return 2;
 }

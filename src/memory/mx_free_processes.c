@@ -1,6 +1,6 @@
 #include "ush.h"
 
-void free_processes(t_processes **processes) {
+void mx_free_processes(t_processes **processes) {
     t_processes *j = *processes;
     while(j) {
         t_processes *proc = j->next;

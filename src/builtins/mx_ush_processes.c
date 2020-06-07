@@ -3,20 +3,20 @@
 static void print_sec(t_processes *processes, char *flags) {
     t_processes *j = processes;
 
-    write(1, " suspended  ", 12);
+    mx_printstr(" suspended  ");
     for (int k = 0; j->data[k]; k++) {
-        write (1, j->data[k], mx_strlen (j->data[k]));
+        mx_printstr(j->data[k]);
         if (j->data[k + 1])
-            write(1, " ", 1);
+            mx_printstr(" ");
     }
-    write(1, "\n", 1);
+    mx_printstr("\n");
     if (flags != NULL && mx_get_char_index(flags, 'd') > 0) {
-        write(1, "(pwd : ", 7);
+        mx_printstr("(pwd : ");
         if (mx_strcmp_null(j->pwd, getenv("HOME")) == 0)
-            write(1, "~", 1); 
+            mx_printstr("~");
         else
-            write(1, j->pwd, mx_strlen(j->pwd));
-        write(1, ")\n", 2);
+            mx_printstr(j->pwd);
+        mx_printstr(")\n");
     }
 }
 
@@ -27,19 +27,19 @@ static void print_proc(t_processes *processes, int num, char *flags) {
         j = j->next;
         num--;
     }
-    write(1, "[", 1);
+    mx_printstr("[");
     mx_printint(j->num);
-    write(1, "]", 1);
-    write(1, "  ", 2);
+    mx_printstr("]");
+    mx_printstr("  ");
     if (j->next == NULL)
-        write(1, "+", 1);
+        mx_printstr("+");
     else if (j->next->next == NULL)
-        write(1, "-", 1);
+        mx_printstr("-");
     else
-       write(1, " ", 1);
+       mx_printstr(" ");
     if (flags != NULL && (mx_get_char_index(flags, 'l') > 0 
         || mx_get_char_index(flags, 'p') > 0)){
-        write(1, " ", 1);
+        mx_printstr(" ");
         mx_printint(j->pid);
     }
     print_sec(j, flags); 
@@ -50,9 +50,9 @@ static bool check_flag(char *args) {
             if (args[i] != 'd' && 
                 args[i] != 'p' && args[i] != 'l'
                     && args[i] != 's') {
-                        write(1, "processes: bad option: -", 19);
+                        mx_printstr("processes: bad option: -");
                         mx_printchar(args[i]);
-                        write(1, "\n", 1);
+                        mx_printstr("\n");
                         return false;
             }
         }
@@ -64,7 +64,7 @@ static int ch_proc(char **args, t_processes *processes, int i, char *flags) {
     t_processes *j = processes;
 
     if ((flags == NULL && args[1] != NULL) || (flags != NULL && args[2] != NULL)) { // если не нул
-        write(1, "+++++\n", 6);
+        mx_printstr("+++++\n");
         for ( ; args[i]; i++) {
             ind = mx_name_search(args[i], processes);
             if (ind == -1) {
@@ -82,7 +82,7 @@ static int ch_proc(char **args, t_processes *processes, int i, char *flags) {
     return 0;
 }
 
-int ush_processes(char **args, t_processes **processes) {
+int mx_ush_processes(char **args, t_processes **processes) {
     int i = 1;
     char *flags = NULL;
     int res = 1;

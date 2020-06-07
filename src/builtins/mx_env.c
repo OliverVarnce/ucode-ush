@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static char **env_copy(char **environ) {
+static char **env_cpy(char **environ) {
     char **res = NULL;
     int len = 0;
 
@@ -18,15 +18,15 @@ static int usage(int f, char *arg) {
         write(2, "usage: env [-iu] [name=value ...] "
                 "[utility [argument ...]]\n", 58);
     else {
-        write(2, "env: '", 6);
-        write(2, arg, mx_strlen(arg));
-        write(2, "': No such file or directory\n", 29);
+        mx_printerr("env: '");
+        mx_printerr(arg);
+        mx_printerr("': No such file or directory\n");
         exit(0);
     }
 	return 1;
 }
 
-static void e_work(char ***environ, t_env *env) {
+static void env_run(char ***environ, t_env *env) {
     char **m = NULL;
 
     if (env->flag_i != 1) {
@@ -44,7 +44,7 @@ static void e_work(char ***environ, t_env *env) {
     free(env);
 }
 
-static int check_args(char ***args, t_env *env, char ***environ) {
+static int check_arg(char ***args, t_env *env, char ***environ) {
     if ((*args)++ && mx_get_char_index(**args, '-') == 0) {
         if (mx_get_char_index(**args, 'i') > 0) {
             env->flag_i = 1;
@@ -62,13 +62,13 @@ static int check_args(char ***args, t_env *env, char ***environ) {
     return 0;
 }
 
-int ush_env(char **args, t_processes **processes) {
+int mx_env(char **args, t_processes **processes) {
     extern char **environ;
     t_env *env = (t_env *)malloc(7 * sizeof(t_env));
     int status = 0;
 
-    env->n = env_copy(environ);
-    if (check_args(&args, env, &environ) > 0)
+    env->n = env_cpy(environ);
+    if (check_arg(&args, env, &environ) > 0)
         return 1;
     if (env->flag_i != 1 && env->flag_u == 1) {
         unsetenv(*args);
@@ -81,7 +81,7 @@ int ush_env(char **args, t_processes **processes) {
         status = mx_empty_proc(args, processes);
     else for (int i = 0; environ[i]; i++)
         printf("%s\n", environ[i]);
-    e_work(&environ, env);
+    env_run(&environ, env);
     if (status == -1)
         return usage(2, *args);
     return 0;

@@ -62,6 +62,6 @@ char *mx_read_stream(t_history *h) {
             line = button(&h, line, buf, &x);
         buf = 0;
     }
-    free_node(head);
+    mx_free_node(head);
     return line;
 }

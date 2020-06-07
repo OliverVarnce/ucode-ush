@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static void to_body(t_processes **j, char **args, pid_t pid) {
+static void to_proc(t_processes **j, char **args, pid_t pid) {
     t_processes *proc = *j;
     
     while (proc) {
@@ -21,7 +21,7 @@ static void to_body(t_processes **j, char **args, pid_t pid) {
     }
 }
 
-void add_proc(t_processes **j, char **args, pid_t pid) {
+void mx_add_proc(t_processes **j, char **args, pid_t pid) {
     t_processes *proc = *j;
 
     if (proc->data == NULL && proc->num == -1) {
@@ -37,5 +37,5 @@ void add_proc(t_processes **j, char **args, pid_t pid) {
         *j = tmp;
         return ;
     }
-    to_body(j, args, pid);
+    to_proc(j, args, pid);
 }

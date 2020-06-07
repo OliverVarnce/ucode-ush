@@ -1,6 +1,6 @@
 #include "ush.h"
 
-void reload(pid_t pid, char **args, t_processes **processes) {
+void mx_reload(pid_t pid, char **args, t_processes **processes) {
     int status;
     pid_t tmp;
     pid_t wait;
@@ -13,7 +13,7 @@ void reload(pid_t pid, char **args, t_processes **processes) {
         wait = waitpid(tmp, &status, WUNTRACED);
         while (!WIFEXITED(status) && !WIFSIGNALED(status)) {
             if (WIFSTOPPED(status)) {
-                add_proc(processes, args, pid);
+                mx_add_proc(processes, args, pid);
                 break;
             }
             wait = waitpid(tmp, &status, WUNTRACED);
@@ -21,25 +21,25 @@ void reload(pid_t pid, char **args, t_processes **processes) {
     }
 }
 
-static void del_body(t_processes **processes) {
+static void del_proc(t_processes **processes) {
     t_processes *j = *processes;
     t_processes *del = j->next;
     
-    reload(del->pid, del->data, processes);
+    mx_reload(del->pid, del->data, processes);
     j->next = NULL;
     j->next = del->next;
     del->next = NULL;
-    free_processes(&del);
+    mx_free_processes(&del);
 }
 
 
-void del_proc(t_processes **processes, int flag) {
+void mx_del_proc(t_processes **processes, int flag) {
     t_processes *j = *processes;
     t_processes *del = j->next;
     
     if (flag == 1) { //голова
         //kill(j->pid, SIGCONT);
-        reload(j->pid, j->data, processes);
+        mx_reload(j->pid, j->data, processes);
         if (j->next == NULL) { //когда один остается
             if (j->data != NULL) 
                 mx_del_strarr(&j->data);
@@ -50,10 +50,10 @@ void del_proc(t_processes **processes, int flag) {
             return ;
         }
         j->next = NULL;
-        free_processes(&j);
+        mx_free_processes(&j);
         *processes = del;
     }
     if (flag == 2) { //тело
-        del_body(processes);
+        del_proc(processes);
     }
 }
