@@ -38,7 +38,7 @@ int mx_find_exp_h(char *str, char *var, t_list **env_set) {
             exstr = mx_cont_var(var, tmp[i]);
             if (exstr != NULL) {
                 flag = 1;
-                if (ush_export(exstr, env_set) == 1)
+                if (mx_export(exstr, env_set) == 1)
                     res = 1;
                 mx_del_strarr(&exstr);
             } 
