@@ -57,7 +57,7 @@ static int check_args(char ***args, t_env *env, char ***environ) {
             (*args)++;
         }
         else if (mx_get_char_index(**args, 'P')) {
-            env->flag_u = 1;
+            env->flag_P = 1;
             (*args)++;
         }
         else if (mx_get_char_index(**args, '-') != 1)
@@ -83,8 +83,9 @@ int ush_env(char **args, t_processes **processes) {
             putenv(*args);
     if (*args)
         status = mx_empty_proc(args, processes);
-    else for (int i = 0; environ[i]; i++)
-        printf("%s\n", environ[i]);
+    else
+        for (int i = 0; environ[i]; i++)
+            printf("%s\n", environ[i]);
     e_work(&environ, env);
     if (status == -1)
         return usage(2, *args);

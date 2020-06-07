@@ -100,6 +100,6 @@ int mx_ush_echo(char **argv) {
             return 0;
     }
     if (!flags[ECHO_NONL])
-        printf("\n");
+        mx_printstr("\n");
     return 0;
 }

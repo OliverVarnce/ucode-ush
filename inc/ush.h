@@ -59,6 +59,7 @@ typedef struct s_history {
 typedef struct s_env {
     int flag_i;
     int flag_u;
+    int flag_P;
     char **n;
     char *clear[1];
 }              t_env;
