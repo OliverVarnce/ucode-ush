@@ -137,5 +137,5 @@ int ush_cd(char **args) {
     }
     env_work(newpwd, pwd, args[in->f], in);
     free(newpwd);
-    return 2;
+    return 0;
 }
