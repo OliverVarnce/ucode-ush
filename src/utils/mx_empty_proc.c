@@ -14,7 +14,7 @@ int mx_empty_proc(char **args, t_processes **processes) {
         !WIFEXITED(status) && !WIFSIGNALED(status);
         waitpid(pid, &status, WUNTRACED)) {
         if (WIFSTOPPED(status)) {
-            add_proc(processes, args, pid);
+            mx_add_proc(processes, args, pid);
             break ;
         }
     }

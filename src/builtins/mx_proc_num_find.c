@@ -5,7 +5,7 @@ static bool del_part(t_processes **processes, int num) {
 
     while(j) { 
         if(j->next->num == num) {
-            del_proc(&j, 2);
+            mx_del_proc(&j, 2);
             return true;
         }
         j = j->next;
@@ -15,15 +15,15 @@ static bool del_part(t_processes **processes, int num) {
     return false;
 }
 
-bool proc_num_find(char *args, t_processes **processes) {
-    char *tmp = cut_str_forproc(args);
+bool mx_proc_num_find(char *args, t_processes **processes) {
+    char *tmp = mx_cut_str_forproc(args);
     int num = mx_atoi(tmp);
     t_processes *j = *processes;
     bool flag = true;
 
     if(j->num == num)
-        del_proc(processes, 1);
-    else if (j->num > 0 && j->next != NULL) //остальное
+        mx_del_proc(processes, 1);
+    else if (j->num > 0 && j->next != NULL)
         flag = del_part(processes, num);
     else 
         flag = false;

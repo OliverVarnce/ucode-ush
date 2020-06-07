@@ -12,25 +12,25 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SRC = $(addprefix $(SRC_DIR)/,\
-      builtins/add_proc.c \
-      builtins/del_proc.c \
-      builtins/detect_builds.c \
-      builtins/env_in_list.c \
-      builtins/env_print.c \
-      builtins/proc_chars_find.c \
-      builtins/proc_cut_str.c \
-      builtins/proc_num_find.c \
+      builtins/mx_add_proc.c \
+      builtins/mx_del_proc.c \
+      builtins/mx_detect_builds.c \
+      builtins/mx_env_in_list.c \
+      builtins/mx_env_print.c \
+      builtins/mx_proc_chars_find.c \
+      builtins/mx_proc_cut_str.c \
+      builtins/mx_proc_num_find.c \
       builtins/mx_create_proc.c \
-      builtins/ush_cd.c \
-      builtins/ush_echo.c \
-      builtins/ush_env.c \
-      builtins/ush_exit.c \
-      builtins/ush_export.c \
-      builtins/ush_fg.c \
-      builtins/ush_processes.c \
-      builtins/ush_pwd.c \
-      builtins/ush_unset.c \
-      builtins/ush_which.c \
+      builtins/mx_cd.c \
+      builtins/mx_echo.c \
+      builtins/mx_env.c \
+      builtins/mx_exit.c \
+      builtins/mx_export.c \
+      builtins/mx_fg.c \
+      builtins/mx_ush_processes.c \
+      builtins/mx_pwd.c \
+      builtins/mx_unset.c \
+      builtins/mx_which.c \
       builtins/print_history.c \
       errhandlers/mx_printerror.c \
       history/history.c \
@@ -72,25 +72,25 @@ SRC = $(addprefix $(SRC_DIR)/,\
       utils/mx_empty_proc.c)
 
 
-OBJ = add_proc.o \
-      del_proc.o \
-      detect_builds.o \
-      env_in_list.o \
-      env_print.o \
-      proc_chars_find.o \
-      proc_cut_str.o \
-      proc_num_find.o \
+OBJ = mx_add_proc.o \
+      mx_del_proc.o \
+      mx_detect_builds.o \
+      mx_env_in_list.o \
+      mx_env_print.o \
+      mx_proc_chars_find.o \
+      mx_proc_cut_str.o \
+      mx_proc_num_find.o \
       mx_create_proc.o \
-      ush_cd.o \
-      ush_echo.o \
-      ush_env.o \
-      ush_exit.o \
-      ush_export.o \
-      ush_fg.o \
-      ush_processes.o \
-      ush_pwd.o \
-      ush_unset.o \
-      ush_which.o \
+      mx_cd.o \
+      mx_echo.o \
+      mx_env.o \
+      mx_exit.o \
+      mx_export.o \
+      mx_fg.o \
+      mx_ush_processes.o \
+      mx_pwd.o \
+      mx_unset.o \
+      mx_which.o \
       mx_printerror.o \
       history.o \
       print_history.o \

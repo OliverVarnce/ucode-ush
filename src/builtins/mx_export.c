@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static char *copy_targ(int count, char *str) {
+static char *cpy_obj(int count, char *str) {
     int start = count + 1;
     int end = count;
     char *res;
@@ -15,7 +15,7 @@ static char *copy_targ(int count, char *str) {
     return res;
 }
 
-static char *zad_pered(char *args, t_list *l) {
+static char *move(char *args, t_list *l) {
     int res;
     char *r = NULL;
     char *tmp = mx_strjoin(args, "=");
@@ -23,7 +23,7 @@ static char *zad_pered(char *args, t_list *l) {
     for (t_list *list = l; list; list = list->next){
         res = mx_get_substr_index(list->data, tmp);
         if (res >= 0) {
-            r = copy_targ(res, list->data);
+            r = cpy_obj(res, list->data);
             mx_strdel(&tmp);
             return r;
         }
@@ -40,11 +40,11 @@ static char *check(char *args, t_list *start_h) {
     if (mx_get_char_index(args, '=') > 0)
         return res;
     else
-        res = zad_pered(args, l);
+        res = move(args, l);
     return res;
 }
 
-static void ch_env (char *a, char *b) {
+static void env_help (char *a, char *b) {
     char **tmp;
     char *c = NULL;
     char *d = NULL;
@@ -62,16 +62,16 @@ static void ch_env (char *a, char *b) {
     mx_strdel(&d);
 }
 
-int ush_export(char **args, t_list **env_set) {
+int mx_export(char **args, t_list **env_set) {
     char *var = NULL;
 
     if (args[1] == NULL)
-        return env_print();
-    env_in_list(env_set, args[1]); // дополнние сета експортом
+        return mx_env_print();
+    mx_env_in_list(env_set, args[1]); // дополнние сета експортом
     for (int i = 1; args[i]; i++) {
         var = check(args[i], *env_set);
         if (mx_strcmp_null(var, "\n") != 0)
-            ch_env (args[i], var);
+            env_help (args[i], var);
         if (var != NULL)
             mx_strdel(&var);
     }

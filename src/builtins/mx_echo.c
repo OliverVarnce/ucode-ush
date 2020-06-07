@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static bool replaced_escaped_hex(char *s) {
+static bool rem_hex(char *s) {
     int width = 0;
     char buf[3] = "";
 
@@ -23,7 +23,7 @@ static bool replaced_escaped_hex(char *s) {
     return 0;
 }
 
-static bool replaced_escaped_octal(char *s) {
+static bool rem_oct(char *s) {
     int width = 0;
     char buf[4] = "";
 
@@ -45,7 +45,7 @@ static bool replaced_escaped_octal(char *s) {
     return 0;
 }
 
-int replaced_escaped_smbl(char *s) {
+int mx_rem_esc_chars(char *s) {
     int ind;
 
     if (s[1] == 'c') {
@@ -67,9 +67,9 @@ static int replace_special_chars(char **str, bool *flags) {
 
     if (!flags[ECHO_NOSPEC] || flags[ECHO_SPEC]) {
         for (char *s = *str; (s = strchr(s, '\\')); s++) {
-            if ((result = replaced_escaped_smbl(s))
-                || (result = replaced_escaped_octal(s))
-                || (result = replaced_escaped_hex(s))) {
+            if ((result = mx_rem_esc_chars(s))
+                || (result = rem_oct(s))
+                || (result = rem_hex(s))) {
                 if (result == -1) {
                     tmp = *str;
                     *str = strdup(*str);
@@ -84,7 +84,7 @@ static int replace_special_chars(char **str, bool *flags) {
     return result;
 }
 
-int mx_ush_echo(char **argv) {
+int mx_echo(char **argv) {
     int argc = 0;
     bool flags[NUM_ECHO_FLAGS] = {0, 0, 0};
     int optind = 1;

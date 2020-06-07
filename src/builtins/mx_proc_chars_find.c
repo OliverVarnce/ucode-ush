@@ -6,15 +6,15 @@ static bool cur_proc(char *tmp , t_processes **processes){
     if (mx_strcmp_null(tmp, "%") == 0 ||
         mx_strcmp_null(tmp, "+") == 0 || tmp == NULL) { 
         if (j->data == NULL && j->num == -1) {
-            write (1, "fg: no current proc\n", 19);
+            mx_printstr("fg: no current proc\n");
             return false;
         }
         else if(j->next == NULL) //голова
-            del_proc(&j, 1);
+            mx_del_proc(&j, 1);
         else {
             while(j->next->next != NULL)
                 j = j->next;
-            del_proc(&j, 2);
+            mx_del_proc(&j, 2);
         }
     }
     return true;
@@ -25,15 +25,15 @@ static bool prev_proc(char *tmp , t_processes **processes){
 
     if (mx_strcmp_null(tmp, "-") == 0) { // previous proc предпоследний
         if (j->next == NULL) {
-            write (1, "fg: no previous proc\n", 20);
+            mx_printstr("fg: no previous proc\n");
             return false;
         }
         else if(j->next->next == NULL)
-            del_proc(processes, 1);
+            mx_del_proc(processes, 1);
         else {
             while(j->next->next->next != NULL)
                 j = j->next;
-            del_proc(&j, 2);
+            mx_del_proc(&j, 2);
         }
     }
     return true;
@@ -50,20 +50,20 @@ static bool name_proc(char *tmp , t_processes **processes){
             return false;
         }
         else if (num == 0)
-            del_proc(&j, 1);
+            mx_del_proc(&j, 1);
         else {
             while(num - 1){
                 j = j->next;
                 num--;
             }
-            del_proc(&j, 2);
+            mx_del_proc(&j, 2);
         }
     }
     return true;
 }
 
-bool proc_chars_find(char *args, t_processes **processes) {
-    char *tmp = cut_str_forproc(args);
+bool mx_proc_chars_find(char *args, t_processes **processes) {
+    char *tmp = mx_cut_str_forproc(args);
     bool flag = true;
 
     if (!cur_proc(tmp, processes))

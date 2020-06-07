@@ -1,7 +1,7 @@
 #include "ush.h"
 
 
-int ush_exit(char **args, t_ush *ush){
+int mx_exit(char **args, t_ush *ush){
     if (args[1] == NULL)
         ush->exit = 0;
     else if (args[2]) {
