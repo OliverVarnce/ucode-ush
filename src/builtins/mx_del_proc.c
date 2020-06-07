@@ -29,7 +29,7 @@ static void del_proc(t_processes **processes) {
     j->next = NULL;
     j->next = del->next;
     del->next = NULL;
-    free_processes(&del);
+    mx_free_processes(&del);
 }
 
 
@@ -50,7 +50,7 @@ void mx_del_proc(t_processes **processes, int flag) {
             return ;
         }
         j->next = NULL;
-        free_processes(&j);
+        mx_free_processes(&j);
         *processes = del;
     }
     if (flag == 2) { //тело

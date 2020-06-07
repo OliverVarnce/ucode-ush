@@ -38,7 +38,7 @@ static bool f_case(char ***v) {
 static bool s_case(char ***v) {
     char **var = *v;
     mx_printstr("export: not an identifier: ");
-    mx_prinstr(var[0]);
+    mx_printstr(var[0]);
     mx_printstr("\n");
     mx_del_strarr(v);
     return false;

@@ -31,28 +31,28 @@ SRC = $(addprefix $(SRC_DIR)/,\
       builtins/mx_pwd.c \
       builtins/mx_unset.c \
       builtins/mx_which.c \
-      builtins/print_history.c \
+      builtins/mx_print_history.c \
       errhandlers/mx_printerror.c \
-      history/history.c \
-      memory/free_processes.c \
-      memory/free_history.c \
-      memory/free_list.c \
-      memory/free_node.c \
-      parsers/parse.c \
-      parsers/parse_backquote.c \
-      parsers/parse_dblqte_openparen_closeparen_opbrce_clbrce.c \
-      parsers/parse_dollar.c \
-      parsers/parse_get_format_str.c \
-      parsers/parse_get_proc_output.c \
-      parsers/parse_get_subst_replace_str.c \
-      parsers/parse_mark_chars.c \
-      parsers/parse_mx_check_parse.c \
-      parsers/parse_mx_create_outer_subst_n_dblq_list.c \
-      parsers/parse_pop_push_free_format_list.c \
-      parsers/parse_replace_sub_str.c \
-      parsers/parse_single_quote.c \
-      parsers/parse_substitutions.c \
-      parsers/parse_tilda.c \
+      history/mx_history.c \
+      memory/mx_free_processes.c \
+      memory/mx_free_history.c \
+      memory/mx_free_list.c \
+      memory/mx_free_node.c \
+      parsers/mx_parse.c \
+      parsers/mx_parse_backquote.c \
+      parsers/mx_parse_dblqte_openparen_closeparen_opbrce_clbrce.c \
+      parsers/mx_parse_dollar.c \
+      parsers/mx_parse_get_format_str.c \
+      parsers/mx_parse_get_proc_output.c \
+      parsers/mx_parse_get_subst_replace_str.c \
+      parsers/mx_parse_mark_chars.c \
+      parsers/mx_parse_mx_check_parse.c \
+      parsers/mx_parse_mx_create_outer_subst_n_dblq_list.c \
+      parsers/mx_parse_pop_push_free_format_list.c \
+      parsers/mx_parse_replace_sub_str.c \
+      parsers/mx_parse_single_quote.c \
+      parsers/mx_parse_substitutions.c \
+      parsers/mx_parse_tilda.c \
       sorting/mx_pop_frontf.c \
       sorting/mx_push_backdup.c \
       stream/read_stream.c \
@@ -92,27 +92,27 @@ OBJ = mx_add_proc.o \
       mx_unset.o \
       mx_which.o \
       mx_printerror.o \
-      history.o \
-      print_history.o \
-      free_processes.o \
-      free_history.o \
-      free_list.o \
-      free_node.o \
-      parse.o \
-      parse_backquote.o \
-      parse_dblqte_openparen_closeparen_opbrce_clbrce.o \
-      parse_dollar.o \
-      parse_get_format_str.o \
-      parse_get_proc_output.o \
-      parse_get_subst_replace_str.o \
-      parse_mark_chars.o \
-      parse_mx_check_parse.o \
-      parse_mx_create_outer_subst_n_dblq_list.o \
-      parse_pop_push_free_format_list.o \
-      parse_replace_sub_str.o \
-      parse_single_quote.o \
-      parse_substitutions.o \
-      parse_tilda.o \
+      mx_history.o \
+      mx_print_history.o \
+      mx_free_processes.o \
+      mx_free_history.o \
+      mx_free_list.o \
+      mx_free_node.o \
+      mx_parse.o \
+      mx_parse_backquote.o \
+      mx_parse_dblqte_openparen_closeparen_opbrce_clbrce.o \
+      mx_parse_dollar.o \
+      mx_parse_get_format_str.o \
+      mx_parse_get_proc_output.o \
+      mx_parse_get_subst_replace_str.o \
+      mx_parse_mark_chars.o \
+      mx_parse_mx_check_parse.o \
+      mx_parse_mx_create_outer_subst_n_dblq_list.o \
+      mx_parse_pop_push_free_format_list.o \
+      mx_parse_replace_sub_str.o \
+      mx_parse_single_quote.o \
+      mx_parse_substitutions.o \
+      mx_parse_tilda.o \
       mx_pop_frontf.o \
       mx_push_backdup.o \
       read_stream.o \

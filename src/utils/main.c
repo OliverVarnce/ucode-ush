@@ -20,7 +20,7 @@ static void start_loop(t_ush *ush) {
             break;
     }
     tcsetattr(0, TCSAFLUSH, &ush->savetty);
-    free_list2(&ush->env_set);
+    mx_free_list(&ush->env_set);
 }
 
 static void pipe_call(t_ush *ush) {
@@ -60,12 +60,12 @@ int main() {
         mx_setup_term(ush);
         start_loop(ush);
         ex = ush->exit;
-        free_history(&ush->hist);
+        mx_free_history(&ush->hist);
         exit(ex);
     }
     else
         pipe_call(ush);
-    free_processes(&ush->processes);
+    mx_free_processes(&ush->processes);
     free(ush);
     return 0;
 }

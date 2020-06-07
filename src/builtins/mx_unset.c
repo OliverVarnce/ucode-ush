@@ -6,7 +6,7 @@ static void unset_var(t_list **env_set, int count, t_list **b) {
 
     if (count == 0) {
         if (front->next == NULL) {
-            free_list2(env_set);
+            mx_free_list(env_set);
             front = mx_create_node(NULL);
             *env_set = front;
         }
@@ -18,7 +18,7 @@ static void unset_var(t_list **env_set, int count, t_list **b) {
         front = front->next;
     front->next = back->next;
     back->next = NULL;
-    free_list2(&back);
+    mx_free_list(&back);
 }
 
 static bool unset_help(t_list **env, t_list **n, int count, char **tmp) {
