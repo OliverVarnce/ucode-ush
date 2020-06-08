@@ -6,10 +6,10 @@ static bool cur_proc(char *tmp , t_processes **processes){
     if (mx_strcmp_null(tmp, "%") == 0 ||
         mx_strcmp_null(tmp, "+") == 0 || tmp == NULL) { 
         if (j->data == NULL && j->num == -1) {
-            mx_printstr("fg: no current proc\n");
+            mx_printstr("fg: no current job\n");
             return false;
         }
-        else if(j->next == NULL) //голова
+        else if(j->next == NULL)
             mx_del_proc(&j, 1);
         else {
             while(j->next->next != NULL)
@@ -23,9 +23,9 @@ static bool cur_proc(char *tmp , t_processes **processes){
 static bool prev_proc(char *tmp , t_processes **processes){
     t_processes *j = *processes;
 
-    if (mx_strcmp_null(tmp, "-") == 0) { // previous proc предпоследний
+    if (mx_strcmp_null(tmp, "-") == 0) {
         if (j->next == NULL) {
-            mx_printstr("fg: no previous proc\n");
+            mx_printstr("fg: no previous job\n");
             return false;
         }
         else if(j->next->next == NULL)
@@ -46,7 +46,7 @@ static bool name_proc(char *tmp , t_processes **processes){
     if (mx_isalpha(tmp[0])) {
         num = mx_name_search(tmp , j);
         if(num == -1) {
-            mx_printerror(1, "", tmp, "fg: proc");
+            mx_printerror(1, "", tmp, "fg: job");
             return false;
         }
         else if (num == 0)

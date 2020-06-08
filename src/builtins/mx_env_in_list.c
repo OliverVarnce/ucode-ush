@@ -9,10 +9,10 @@ static bool change_var(t_list **env_set, char *src) {
         return true;
 
     t_var = mx_strsplit(src, '=');
-    for( ; tmp; tmp = tmp->next) { //заменить
+    for( ; tmp; tmp = tmp->next) {
         if (mx_get_substr_index(tmp->data, t_var[0]) >= 0) {
             t_set = mx_strsplit(tmp->data, '=');
-            if (mx_strcmp_null(t_set[0], t_var[0]) == 0) { //t_var[1] != NULL
+            if (mx_strcmp_null(t_set[0], t_var[0]) == 0) {
                 free(tmp->data);
                 tmp->data = mx_strdup(src);
                 mx_del_strarr(&t_set);
@@ -65,11 +65,11 @@ void mx_env_in_list(t_list **env_set, char *src) {
     t_list *tmp = *env_set;
 
     if (var_check(src)) {
-        if (tmp->data == NULL) { //если пусто
+        if (tmp->data == NULL) {
             tmp->data = mx_strjoin(tmp->data, src);
             return;
         }
-        if (!change_var(env_set, src)) //добавить
+        if (!change_var(env_set, src))
             mx_push_backdup(env_set, src);
     }
 }

@@ -55,8 +55,8 @@ SRC = $(addprefix $(SRC_DIR)/,\
       parsers/mx_parse_tilda.c \
       sorting/mx_pop_frontf.c \
       sorting/mx_push_backdup.c \
-      stream/read_stream.c \
-      stream/stream.c \
+      stream/mx_read_stream.c \
+      stream/mx_stream.c \
       utils/mx_copy_dub_arr.c \
       utils/mx_detect_exp.c \
       utils/main.c \
@@ -115,8 +115,8 @@ OBJ = mx_add_proc.o \
       mx_parse_tilda.o \
       mx_pop_frontf.o \
       mx_push_backdup.o \
-      read_stream.o \
-      stream.o \
+      mx_read_stream.o \
+      mx_stream.o \
       mx_copy_dub_arr.o \
       mx_detect_exp.o \
       main.o \

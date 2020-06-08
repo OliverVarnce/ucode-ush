@@ -19,7 +19,7 @@ static bool push_pers(char *args, t_processes **processes) {
             return false;
     }
     else {
-        mx_printerror(1, "", args, "fg: proc");
+        mx_printerror(1, "", args, "fg: job");
         return false;
     }
     return true; 
@@ -42,7 +42,7 @@ int mx_fg(char **args, t_processes **processes) {
                 return 1;
         }
         else 
-            return mx_printerror(1, "", args[i], "fg: proc");
+            return mx_printerror(1, "", args[i], "fg: job");
     }
     return 0;
 }

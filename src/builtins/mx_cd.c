@@ -13,7 +13,6 @@ static int wrong_cd(char *name, t_cd *num) {
     mx_printerr("\n");
     free(num);
     errno = 0;
-    // system("leaks -q ush");
     return 1;
 }
 
@@ -50,7 +49,6 @@ int mx_env_in_run(char *newpwd, char *pwd, char *args, t_cd *in) {
     free(pwd);
     errno = 0;
     free(in);
-    // system("leaks -q ush");
     return 2;
 }
 
@@ -89,7 +87,6 @@ char *mx_run(char *newpwd, char **m, t_cd *in) {
                 return newpwd;
             }
         }
-        // printf("%s\n", newpwd);
     }
     mx_del_strarr(&m);
     return newpwd;
