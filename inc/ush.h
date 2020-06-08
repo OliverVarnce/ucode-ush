@@ -199,7 +199,6 @@ int mx_detect_builds(char **args, t_ush *ush);
 char *mx_strpart(char *str, int index);
 char *mx_stream(int buf, char *line, int *x);
 void mx_free_node(t_history *node);
-int mx_detect_builds(char **args, t_ush *ush);
 
 int mx_detect_exp(char **proc, t_history *start_h, t_list **env_set);
 void mx_env_in_list(t_list **env_set, char *src);

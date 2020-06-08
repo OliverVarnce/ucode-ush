@@ -21,10 +21,10 @@ int mx_builtin(char **args, t_ush *ush) {
         return mx_fg(args, &ush->processes);
     if (!mx_strcmp(args[0], "processes"))
         return mx_ush_processes(args, &ush->processes);
-    if (!mx_strcmp(args[0], "false"))
-        return 1;
-    if (!mx_strcmp(args[0], "true"))
-        return 0;
+//    if (!mx_strcmp(args[0], "false"))
+//        return 1;
+//    if (!mx_strcmp(args[0], "true"))
+//        return 0;
     if (!mx_strcmp(args[0], "history"))
         return mx_print_history(ush);
     return -1;

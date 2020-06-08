@@ -97,7 +97,7 @@ int mx_echo(char **argv) {
         flags[mx_get_char_index("neE", optchar)] = 1;
     for (char **p = argv + optind; *p; p++) {
         if (replace_special_chars(p, flags) == -1)
-            return 0;
+            return 1;
     }
     if (!flags[ECHO_NONL])
         printf("\n");
