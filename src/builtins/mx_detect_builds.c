@@ -32,12 +32,15 @@ int mx_builtin(char **args, t_ush *ush) {
 
 int mx_detect_builds(char **args, t_ush *ush) {
     int bins;
+    if (getenv("PATH")) {
+        return 1;
+    }
 
     if (!args || !args[0])
         return 0;
     if ((bins = mx_builtin(args, ush)) != -1)
         return bins;
-    bins = mx_detect_exp(args, ush->hist, &ush->env_set);;
+    bins = mx_detect_exp(args, ush->hist, &ush->env_set);
     if (bins != 3) 
         return bins;
     else

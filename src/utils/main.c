@@ -36,25 +36,48 @@ static void pipe_call(t_ush *ush) {
     mx_parse(line, ush);
 }
 
-static void set_slvlup() {
-    char *s;
+//static void set_slvlup() {
+//    char *s;
+//
+//    if (getppid() == 1)
+//        return;
+//    if (getenv("SHLVL")) {
+//        s = mx_itoa((mx_atoi(getenv("SHLVL"))) + 1);
+//        setenv("SHLVL", s, 1);
+//        free(s);
+//    }
+//
+//}
 
-    if (getppid() == 1)
-        return;
-    if (getenv("SHLVL")) {
-        s = mx_itoa((mx_atoi(getenv("SHLVL"))) + 1);
-        setenv("SHLVL", s, 1);
-        free(s);
-    }
-
+void mx_mysetenv() {
+    struct passwd *pw = getpwuid(getuid());
+    char *pwd = getcwd(NULL, 0);
+    setenv("HOME", pw->pw_dir, 0);
+    setenv("LOGNAME", getlogin(), 0);
+    setenv("PWD", pwd, 0);
+    setenv("OLDPWD",pwd, 0);
+    setenv("SHLVL", "1", 0);
+    setenv("_", "/usr/bin/env", 0);
+    free(pwd);
 }
 
 int main() {
     int ex = 0;
     t_ush *ush = (t_ush *)calloc(6, sizeof(t_ush));
+
+    if ((*environ) == NULL || getenv("SHLVL")) {
+        mx_mysetenv();
+        ush->env = true;
+    }
+    else
+        ush->env = false;
+
+    for (int i = 0; environ[i] != NULL; i++)
+        printf("%s\n", environ[i]);
+
     ush->processes = mx_create_proc(NULL, -1, -1, NULL);
 
-    set_slvlup();
+//    set_slvlup();
     ush->exit = -1;
     if (isatty(0)) {
         mx_setup_term(ush);

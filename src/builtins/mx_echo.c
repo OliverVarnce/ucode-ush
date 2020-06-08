@@ -13,7 +13,7 @@ static bool rem_hex(char *s) {
                 width++;
         }
         if (width) {
-            strncpy(buf, s + 2, width);
+            mx_strncpy(buf, s + 2, width);
             sscanf(buf, "%hhx", s + 2);
             if (width == 2)
                 s[3] = M_SKP;

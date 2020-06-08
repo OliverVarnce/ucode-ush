@@ -133,7 +133,7 @@ OBJ = mx_add_proc.o \
 
 CC = clang
 
-CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
+CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic #-g3 -fsanitize=address
 
 all : install
 

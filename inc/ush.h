@@ -32,6 +32,7 @@
 #define MX_IFLNK         0120000         /* [XSI] symbolic link */
 
 #define CANON_OPTS 228
+extern char **environ;
 
 typedef struct s_processes {
     int num;
@@ -69,6 +70,7 @@ typedef struct s_ush {
     struct s_list *env_set;
     struct s_history *hist;
     struct termios savetty;
+    bool env;
 }              t_ush;
 
 #define MX_FUNC_SYMBOLS "\"\'$`(){}\\;"

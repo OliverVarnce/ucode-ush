@@ -16,15 +16,18 @@ static void paste_subst(char **str, char *replace, t_range *rep_range,
         else if (dblq_p->data->end > rep_range->end)
             dblq_p->data->end += shift;
     }
+
     mx_replace_sub_str(str, rep_range->start, rep_range->end, replace);
-    free(replace);
+//    if (replace != NULL)
+//        free(replace);
+    printf("************************************\n");
 }
 
 static char *mark_sbst_output(char *str, bool in_quotes) {
     char *s;
 
     if (!str || !*str)
-        return str;
+        return NULL;
     for (s = str + mx_strlen(str) - 1; *s == '\n'; s--)
         *s = M_SKP;
     if (in_quotes)

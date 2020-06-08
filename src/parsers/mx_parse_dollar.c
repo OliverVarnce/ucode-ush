@@ -23,7 +23,7 @@ static int find_brace_pair(char *s, int *i, t_frmt_lst **arr) {
     *i += 2;
     if (s[*i] == '?') {
         if (s[*i + 1] == '}') {
-            mx_push_back_format(arr + DOL_BP, start, *i + 1, NULL);
+            mx_push_back_format(arr + DOL_BP, start, *i, NULL);
             return 0;
         }
         fprintf(stderr, MX_ERR_PARSE_BADSBN);
