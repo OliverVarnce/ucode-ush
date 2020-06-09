@@ -33,11 +33,17 @@ static void env_run(char ***environ, t_env *env) {
         *environ = env->clear;
         env->clear[0] = NULL;
     }
-    for (int i = 0; env->clear[i]; i++)
+    for (int i = 0; env->clear[i]; i++) {
         env->clear[i] = NULL;
+    }
     for (int i = 0; env->n[i]; i++) {
         m = mx_strsplit(env->n[i], '=');
-        setenv(m[0], m[1], 1);
+//        for (int j = 0; m[j]; j++) {
+//            printf("%s\n", m[j]);
+//        }
+//        printf("OLEG\n");
+        if (m[0] && m[1])
+            setenv(m[0], m[1], 0);
         mx_del_strarr(&m);
     }
     mx_del_strarr(&env->n);

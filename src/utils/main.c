@@ -75,8 +75,8 @@ int main() {
     else
         ush->env = false;
 
-    for (int i = 0; environ[i] != NULL; i++)
-        printf("%s\n", environ[i]);
+//    for (int i = 0; environ[i] != NULL; i++)
+//        printf("%s\n", environ[i]);
 
     ush->processes = mx_create_proc(NULL, -1, -1, NULL);
 
