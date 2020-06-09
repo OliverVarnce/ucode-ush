@@ -39,14 +39,26 @@ static int builtin_check(char *args) {
 int mx_which(char **args) {
     int f = 1;
     int flag = 0;
-    
+
     if (args[1] == NULL)
         return 1;
     if (args[1][0] == '-' && args[1][1] == 'a') {
-        args++;
+        //args++;
         flag = 1;
+       //for (args++; *args; args++) {
+           printf("***************************\n");
+           f = 1;
+            if (builtin_check(*args)) {
+                f = to_access(*args, flag);
+                if (f == 1) {
+                    mx_printstr(*args);
+                    mx_printstr(" not found\n");
+                }
+            }
+       // }
     }
-    for (args++; *args; args++) {
+    else if (args[1][0] == '-' && args[1][1] == 's') {
+        flag = 0;
         f = 0;
         if (builtin_check(*args)) {
             f = to_access(*args, flag);
@@ -56,5 +68,6 @@ int mx_which(char **args) {
             }
         }
     }
+
     return f;
 }

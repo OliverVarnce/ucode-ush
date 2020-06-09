@@ -69,7 +69,6 @@ static int check_arg(char ***args, t_env *env, char ***environ) {
 }
 
 int mx_env(char **args, t_processes **processes) {
-//    extern char **environ;
     t_env *env = (t_env *)malloc(7 * sizeof(t_env));
     int status = 0;
 

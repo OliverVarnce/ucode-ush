@@ -18,9 +18,10 @@ static void paste_subst(char **str, char *replace, t_range *rep_range,
     }
 
     mx_replace_sub_str(str, rep_range->start, rep_range->end, replace);
-    if (replace != NULL)
-        mx_strdel(&replace);
-   // printf("************************************\n");
+//    if (replace != NULL) {
+//       free(replace);
+//        printf("************************************\n");
+//    }
 }
 
 static char *mark_sbst_output(char *str, bool in_quotes) {
