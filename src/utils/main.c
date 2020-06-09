@@ -52,6 +52,8 @@ static void pipe_call(t_ush *ush) {
 void mx_mysetenv() {
     struct passwd *pw = getpwuid(getuid());
     char *pwd = getcwd(NULL, 0);
+    if (getppid() == 1)
+        return;
     setenv("HOME", pw->pw_dir, 0);
     setenv("LOGNAME", getlogin(), 0);
     setenv("PWD", pwd, 0);
@@ -59,6 +61,7 @@ void mx_mysetenv() {
     setenv("SHLVL", "1", 0);
     setenv("_", "/usr/bin/env", 0);
     free(pwd);
+
 }
 
 int main() {
