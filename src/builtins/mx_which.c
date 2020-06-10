@@ -33,7 +33,7 @@ static int builtin_check(char *args) {
             return 0;
         }
     }
-    return 1;
+    return 2;
 }
 
 int mx_which(char **args) {
