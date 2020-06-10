@@ -4,8 +4,11 @@ static char *param_dollar_expansion(char **str, t_frmt_lst *list, t_ush *ush) {
     char *replace = NULL;
     char *buf = NULL;
 
-    if ((*str)[list->data->start + 1] == '?')
+    if ((*str)[list->data->start + 1] == '?') {
         replace = mx_itoa(ush->last_return);
+        printf("%d\n", ush->last_return);
+        printf("=================%s=================\n", replace);
+    }
     else {
         buf = strndup(*str + list->data->start + 1,
                       list->data->end - list->data->start);
@@ -57,20 +60,24 @@ static void unslash_str(char **str) {
 char *mx_get_subst_replace_str(char **str, t_frmt_lst *list, t_ush *ush) {
     char *replace = NULL;
 
-    if (!str || !list)
+    if (!str || !list) {
         return NULL;
+    }
     if ((*str)[list->data->start] == '`') {
         replace = strndup(*str + list->data->start + 1,
                           list->data->end - list->data->start - 1);
         unslash_str(&replace);
     }
-    else if ((*str)[list->data->start + 1] == '(')
+    else if ((*str)[list->data->start + 1] == '(') {
         replace = strndup(*str + list->data->start + 2,
                           list->data->end - list->data->start - 2);
-    else if ((*str)[list->data->start + 1] == '{')
+    }
+    else if ((*str)[list->data->start + 1] == '{') {
         replace = param_dollar_braces_expansion(str, list, ush);
-    else
+    }
+    else {
         replace = param_dollar_expansion(str, list, ush);
+    }
     if (!replace)
         replace = calloc(1, 1);
     return replace;

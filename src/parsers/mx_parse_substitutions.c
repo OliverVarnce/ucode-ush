@@ -18,10 +18,11 @@ static void paste_subst(char **str, char *replace, t_range *rep_range,
     }
 
     mx_replace_sub_str(str, rep_range->start, rep_range->end, replace);
-//    if (replace != NULL) {
-//       free(replace);
-//        printf("************************************\n");
-//    }
+    if (strcmp(replace, "0") != 0) {
+       free(replace);
+        printf("***********************************************\n");
+    }
+    printf("***********%s\n", replace);
 }
 
 static char *mark_sbst_output(char *str, bool in_quotes) {
@@ -51,8 +52,9 @@ int mx_handle_substitutions(char **str, t_frmt_lst **arr, t_ush *ush) {
         if ((*str)[lst->data->start] == '`'
             || (*str)[lst->data->start + 1] == '(') {
             process_out = mx_get_subst_outputs(replace, ush);
-            if (!process_out)
+            if (!process_out) {
                 return -1;
+            }
             mx_strdel(&replace);
             replace = mark_sbst_output(process_out,
                 mx_is_inside_of(lst->data->start, OUT_DBQ, arr) ? 1 : 0);

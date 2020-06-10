@@ -123,7 +123,7 @@ int mx_cd(char **args) {
     
     in->f = 1;
     if (mx_env_return(args, pwd, in) > 0)
-        return 2;
+        return 0;
     (args[1][0] == '-') ? in->f = 2 : 0;
     in->f == 2 && mx_get_char_index(args[1], 's') > -1 ? in->flag_s = 2 : 0;
     in->f == 2 && mx_get_char_index(args[1], 'P') > -1 ? in->flag_P = 1 : 0;

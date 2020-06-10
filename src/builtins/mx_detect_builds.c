@@ -45,8 +45,9 @@ int mx_detect_builds(char **args, t_ush *ush) {
     if ((bins = mx_builtin(args, ush)) != -1)
         return bins;
     bins = mx_detect_exp(args, ush->hist, &ush->env_set);
-    if (bins != 3){
-        printf("%i", bins);
+    if (bins != 3) {
+        if (ush->last_return == 2)
+            ush->last_return = 1;
         return bins;
     }
     else

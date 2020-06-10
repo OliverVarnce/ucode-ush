@@ -45,7 +45,6 @@ static int find_dollar_param_end(char *s, int *i, t_frmt_lst **arr) {
         fprintf(stderr, MX_ERR_PARSE_UNESCDOL);
         return -1;
     }
-    //printf("**************OLEG***************\n");
     mx_push_back_format(arr + DOL_P, start, *i, NULL);
     return 0;
 }

@@ -10,7 +10,7 @@ static void start_loop(t_ush *ush) {
         mx_printstr("u$h> ");
         line = mx_read_stream(ush->hist);
     //char *line = strdup("env -i emacs");
-    mx_printstr("\n");
+        mx_printstr("\n");
         if (line != NULL && mx_strlen(line) > 0) {
             mx_history_replenish(&ush->hist, line);
             mx_disable_canon();
