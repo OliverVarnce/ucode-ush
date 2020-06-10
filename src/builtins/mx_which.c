@@ -46,7 +46,6 @@ int mx_which(char **args) {
         //args++;
         flag = 1;
        //for (args++; *args; args++) {
-           printf("***************************\n");
            f = 1;
             if (builtin_check(*args)) {
                 f = to_access(*args, flag);
