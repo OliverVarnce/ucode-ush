@@ -29,7 +29,7 @@ static int builtin_check(char *args) {
     
     for (int i = 0; built[i]; i++) {
         if (!mx_strcmp(built[i], args)) {
-           // printf("%s: shell built-in command\n", built[i]);
+            printf("%s: shell built-in command\n", built[i]);
             return 0;
         }
     }
