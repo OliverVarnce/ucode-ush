@@ -10,11 +10,11 @@ static bool cur_proc(char *tmp , t_processes **processes){
             return false;
         }
         else if(j->next == NULL)
-            mx_del_proc(&j, 1);
+            mx_del_proc(&j, 1, processes);
         else {
             while(j->next->next != NULL)
                 j = j->next;
-            mx_del_proc(&j, 2);
+            mx_del_proc(&j, 2, processes);
         }
     }
     return true;
@@ -29,11 +29,11 @@ static bool prev_proc(char *tmp , t_processes **processes){
             return false;
         }
         else if(j->next->next == NULL)
-            mx_del_proc(processes, 1);
+            mx_del_proc(processes, 1, processes);
         else {
             while(j->next->next->next != NULL)
                 j = j->next;
-            mx_del_proc(&j, 2);
+            mx_del_proc(&j, 2, processes);
         }
     }
     return true;
@@ -50,13 +50,13 @@ static bool name_proc(char *tmp , t_processes **processes){
             return false;
         }
         else if (num == 0)
-            mx_del_proc(&j, 1);
+            mx_del_proc(&j, 1, processes);
         else {
             while(num - 1){
                 j = j->next;
                 num--;
             }
-            mx_del_proc(&j, 2);
+            mx_del_proc(&j, 2, processes);
         }
     }
     return true;

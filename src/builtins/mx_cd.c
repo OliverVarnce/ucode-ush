@@ -36,17 +36,16 @@ char *mx_dot_back(char *newpwd) {
 }
 
 int mx_env_in_run(char *newpwd, char *pwd, char *args, t_cd *in) {
-    char *gcwd = getcwd(NULL, 0);
-
     if (chdir(newpwd) == -1) {
         free(pwd);
         in->error = 1;
         return wrong_cd(args, in);
     }
-    if (in->flag_P == 1){
+    char *gcwd = getcwd(NULL, 0);
+
+    if (in->flag_P == 1)
         setenv("PWD", gcwd, 1);
-    }
-    else 
+    else
         setenv("PWD", newpwd, 1);
     setenv("OLDPWD", pwd, 1);
     free(pwd);
@@ -137,5 +136,5 @@ int mx_cd(char **args) {
     }
     mx_env_in_run(newpwd, pwd, args[in->f], in);
     free(newpwd);
-    return 2;
+    return 0;
 }

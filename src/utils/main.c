@@ -5,11 +5,12 @@ static void start_loop(t_ush *ush) {
     ush->hist = NULL;
     ush->env_set = mx_create_node(NULL);
 
-    for (; CANON_OPTS;) {
+   for (; CANON_OPTS;) {
         mx_enable_canon();
         mx_printstr("u$h> ");
         line = mx_read_stream(ush->hist);
-        mx_printstr("\n");
+    //char *line = strdup("env -i emacs");
+    mx_printstr("\n");
         if (line != NULL && mx_strlen(line) > 0) {
             mx_history_replenish(&ush->hist, line);
             mx_disable_canon();

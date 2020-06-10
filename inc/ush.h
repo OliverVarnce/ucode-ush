@@ -36,6 +36,8 @@ extern char **environ;
 
 typedef struct s_processes {
     int num;
+    int index;
+    int sign;
     pid_t pid;
     char **data;
     char *pwd;
@@ -210,7 +212,7 @@ int mx_unset(char **args, t_list **env_set);
 int mx_fg(char **args, t_processes **processes);
 int mx_printerror(int errnum, char *name, char *args, char *str);
 
-void mx_del_proc(t_processes **processes, int flag);
+void mx_del_proc(t_processes **processes, int flag, t_processes **first);
 char *mx_cut_str_forproc(char *args);
 bool mx_proc_num_find(char *args, t_processes **processes);
 bool mx_proc_chars_find(char *args, t_processes **processes);

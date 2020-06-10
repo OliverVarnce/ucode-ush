@@ -34,17 +34,18 @@ static int find_brace_pair(char *s, int *i, t_frmt_lst **arr) {
 
 static int find_dollar_param_end(char *s, int *i, t_frmt_lst **arr) {
     int start = *i;
-
     if (s[*i + 1] == '?') {
         mx_push_back_format(arr + DOL_P, start, *i + 1, NULL);
         return 0;
     }
-    while (mx_isalpha(s[*i + 1]) || mx_isdigit(s[*i + 1]))
+    while (mx_isalpha(s[*i + 1]) || mx_isdigit(s[*i + 1])) {
         (*i)++;
+    }
     if (*i - start == 0) {
         fprintf(stderr, MX_ERR_PARSE_UNESCDOL);
         return -1;
     }
+    //printf("**************OLEG***************\n");
     mx_push_back_format(arr + DOL_P, start, *i, NULL);
     return 0;
 }

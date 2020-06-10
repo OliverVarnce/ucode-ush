@@ -5,6 +5,8 @@ static void end_reading(pid_t pid, int *pipe) {
 
     close(pipe[0]);
     waitpid(pid, &status, WUNTRACED);
+    tcsetpgrp(0, getpid());
+    tcsetpgrp(1, getpid());
     errno = 0;
 }
 
@@ -39,6 +41,8 @@ static char *process_output(char *str, int (*parse_p)(char *, t_ush *),
         return NULL;
     }
     if (pid == 0) {
+        tcsetpgrp(0, getpid());
+        tcsetpgrp(1, getpid());
         setvbuf(stdout, NULL, _IONBF, 0);
         close(p[0]);
         dup2(p[1], 1);
