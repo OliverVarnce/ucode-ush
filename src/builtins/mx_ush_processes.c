@@ -99,7 +99,7 @@ int mx_ush_processes(char **args, t_processes **processes) {
             if (flags != NULL)
                 mx_strdel(&flags);
             return 0;
-        }
+    }
     res = ch_proc(args, j, i, flags);
     if (flags != NULL)
         mx_strdel(&flags);

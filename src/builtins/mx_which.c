@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static int to_access(char *args, int flag) {
+static int to_access(char **args) {
     char *tmp = NULL;
     int f = 1;
     char *path = getenv("PATH");
@@ -9,13 +9,24 @@ static int to_access(char *args, int flag) {
     m = mx_strsplit(path, ':');
     for (int i = 0; m[i]; i++) {
         tmp = mx_strjoin(m[i], "/");
-        tmp = mx_delit_fre(tmp, args);
-        if (to_access(tmp, F_OK) == 0) {
-            flag != 3 ? printf("%s\n", tmp) : 0;
+        tmp = mx_delit_fre(tmp, args[1]);
+        
+        // printf("%s\n", tmp);
+        
+        if (tmp) {
+            printf("%s\n", tmp);
+            return f;
+        } else {
             f = 0;
-            if (flag == 0)
-                break ;
+            return f;
         }
+        
+//        if (to_access(tmp, F_OK) == 0) {
+//            flag != 3 ? printf("%s\n", tmp) : 0;
+//            f = 0;
+//            if (flag == 0)
+//                break ;
+//        }
         mx_strdel(&tmp);
     }
     mx_strdel(&tmp);
@@ -39,17 +50,30 @@ static int builtin_check(char *args) {
 int mx_which(char **args) {
     int f = 1;
     int flag = 0;
-    
+
     if (args[1] == NULL)
         return 1;
     if (args[1][0] == '-' && args[1][1] == 'a') {
         args++;
         flag = 1;
+        to_access(args);
+//       for (args++; *args; args++) {
+           f = 1;
+            if (builtin_check(*args)) {
+                to_access(args);
+                if (f == 1) {
+                    mx_printstr(*args);
+                    mx_printstr(" not found\n");
+                }
+            }
+//        }
     }
-    for (args++; *args; args++) {
+    else if (args[1][0] == '-' && args[1][1] == 's') {
+        flag = 0;
         f = 0;
-        if (builtin_check(*args)) {
-            f = to_access(*args, flag);
+        if (builtin_check(args[2])) {
+            printf("test\n");
+//            f = to_access(*args, flag);
             if (f == 1) {
                 mx_printstr(*args);
                 mx_printstr(" not found\n");

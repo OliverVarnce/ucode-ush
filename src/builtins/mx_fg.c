@@ -32,7 +32,7 @@ int mx_fg(char **args, t_processes **processes) {
         else 
            return 0; 
     }
-    for(int i = 1; args[i]; i++) {
+    for (int i = 1; args[i]; i++) {
         if (mx_get_char_index(args[i], '%') == 0) {
             if (!push_pers(args[i], processes))
                 return 1;
