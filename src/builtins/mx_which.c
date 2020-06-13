@@ -33,25 +33,36 @@ static int builtin_check(char *args) {
 int mx_which(char **args) {
     int error_code = 0;
 
-    if (args[1] == NULL)
+    if (args[1] == NULL || args[2] == NULL)
         return 1;
-    if (args[1][0] == '-' && args[1][1] == 'a' && args[2]) {
-            if (builtin_check(args[2])) {
-                mx_printstr(args[2]);
+    for (int i = 1; args[i]; i++) {
+        if (mx_strcmp(args[i], "-a") != 0 && mx_strcmp(args[i], "-s") != 0) {
+            if (builtin_check(args[i])) {
+                mx_printstr(args[i]);
                 mx_printstr(" not found\n");
                 error_code = 1;
             }
             if (error_code == 0)
-                to_access(args[2]);
-    }
-    else if (args[1][0] == '-' && args[1][1] == 's' && args[2]) {
-        if (builtin_check(args[2])) {
-            mx_printstr(args[2]);
-            mx_printstr(" not found\n");
-            error_code = 1;
+                to_access(args[i]);
+        }
+        else if (mx_strcmp(args[i], "-a") == 0) {
+            i++;
+            if (builtin_check(args[i])) {
+                mx_printstr(args[i]);
+                mx_printstr(" not found\n");
+                error_code = 1;
+            }
+            if (error_code == 0)
+                to_access(args[i]);
+        }
+        else if (mx_strcmp(args[i], "-s") == 0) {
+            i++;
+            if (builtin_check(args[i])) {
+                mx_printstr(args[i]);
+                mx_printstr(" not found\n");
+                error_code = 1;
+            }
         }
     }
-    else if (args[2] == NULL)
-        error_code = 1;
     return error_code;
 }
