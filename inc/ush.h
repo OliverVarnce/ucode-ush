@@ -27,6 +27,20 @@
 
 #include "libmx.h"
 
+#include <sys/cdefs.h>
+#include <sys/_types.h>
+#include <sys/_types/_pid_t.h>
+#include <sys/_types/_id_t.h>
+#include <sys/signal.h>
+#include <sys/resource.h>
+
+#define MX_W_INT(w)         (*(int *)&(w))
+#define MX_WST(x)           (x & 0177)
+#define MX_WIFEXIT(x)       (MX_WST(x) == 0)
+#define MX_WIFSIG(x)        (MX_WST(x) != _WSTOPPED && MX_WST(x) != 0)
+#define MX_WTERMSIG(x)      (MX_WST(x))
+#define MX_EXSTATUS(x)      ((MX_W_INT(x) >> 8) & 0x000000ff)
+
 #define MX_ISLNK(m)      (((m) & MX_IFMT) == MX_IFLNK)                  
 #define MX_IFMT          0170000    
 #define MX_IFLNK         0120000         /* [XSI] symbolic link */
@@ -35,6 +49,7 @@
 extern char **environ;
 
 typedef struct s_processes {
+    int last_return;
     int num;
     int index;
     int sign;
@@ -209,7 +224,7 @@ int mx_detect_exp(char **proc, t_history *start_h, t_list **env_set);
 void mx_env_in_list(t_list **env_set, char *src);
 int mx_export(char **args, t_list **env_set);
 int mx_unset(char **args, t_list **env_set);
-int mx_fg(char **args, t_processes **processes);
+void mx_fg(char **args, t_processes **processes);
 int mx_printerror(int errnum, char *name, char *args, char *str);
 
 void mx_del_proc(t_processes **processes, int flag, t_processes **first);
@@ -223,5 +238,8 @@ char *mx_join(char *src, char *d);
 int mx_strcmp_null(const char *s1, const char *s2);
 int mx_print_history(t_ush *ush);
 int mx_env_print(void);
+
+void mx_del_pid_process(t_processes **processes, int pid);
+void mx_del_top_process(t_processes *processes);
 
 #endif
