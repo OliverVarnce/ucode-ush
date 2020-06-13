@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static void to_access(char *args) {
+static void mx_print_path(char *args) {
     char *tmp = NULL;
     char *path = getenv("PATH");
     char **m = NULL;
@@ -17,50 +17,43 @@ static void to_access(char *args) {
     mx_del_strarr(&m);
 }
 
-static int builtin_check(char *args) {
-    char *built[] = {"cd", "pwd", "exit", "which", "env", "fg", 
+static void print_builtin_msg(char *args, int *err_code, int flag_a, int *f_pass) {
+    char *built[] = {"cd", "pwd", "exit", "which", "env", "fg",
         "processes", "export", "unset", "false", "true", NULL};
+    int built_in = 0;
 
     for (int i = 0; built[i]; i++) {
         if (!mx_strcmp(built[i], args)) {
-            printf("%s: shell built-in command\n", built[i]);
-            return 0;
+            printf("%s: shell built-in command\n", args);
+            if (flag_a)
+                mx_print_path(args);
+            built_in = 1;
+            if (*f_pass == 1)
+                *err_code = 0;
         }
     }
-    return 1;
+    if (built_in == 0) {
+        printf("%s not found\n", args);
+        *err_code = 1;
+    }
+    *f_pass = 0;
 }
 
 int mx_which(char **args) {
-    int error_code = 0;
+    int err_code = 1;
+    int flag_a = 0;
+    int i = 1;
+    int f_pass = 1;
 
-    if (args[1] == NULL || args[2] == NULL)
+    if (!args[i])
         return 1;
-    for (int i = 1; args[i]; i++) {
-        if (mx_strcmp(args[i], "-a") != 0 && mx_strcmp(args[i], "-s") != 0) {
-            if (builtin_check(args[i])) {
-                mx_printstr(args[i]);
-                mx_printstr(" not found\n");
-                error_code = 1;
-            }
-        }
-        else if (mx_strcmp(args[1], "-a") == 0) {
-            i++;
-            if (builtin_check(args[i])) {
-                mx_printstr(args[i]);
-                mx_printstr(" not found\n");
-                error_code = 1;
-            }
-            if (error_code == 0)
-                to_access(args[i]);
-        }
-        else if (mx_strcmp(args[1], "-s") == 0) {
-            i++;
-            if (builtin_check(args[i])) {
-                mx_printstr(args[i]);
-                mx_printstr(" not found\n");
-                error_code = 1;
-            }
-        }
+    else if (!mx_strcmp(args[i], "-a")) {
+        flag_a = 1;
+        i++;
     }
-    return error_code;
+    else if (!mx_strcmp(args[i], "-s"))
+        i++;
+    for (; args[i]; i++)
+        print_builtin_msg(args[i], &err_code, flag_a, &f_pass);
+    return err_code;
 }
