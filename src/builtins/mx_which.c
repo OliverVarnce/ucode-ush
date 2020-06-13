@@ -4,7 +4,7 @@ static void to_access(char *args) {
     char *tmp = NULL;
     char *path = getenv("PATH");
     char **m = NULL;
-
+    
     m = mx_strsplit(path, ':');
     for (int i = 0; m[i]; i++) {
         tmp = mx_strjoin(m[i], "/");
@@ -36,14 +36,12 @@ int mx_which(char **args) {
     if (args[1] == NULL || args[2] == NULL)
         return 1;
     for (int i = 1; args[i]; i++) {
-        if (mx_strcmp(args[1], "-a") != 0 && mx_strcmp(args[1], "-s") != 0) {
+        if (mx_strcmp(args[i], "-a") != 0 && mx_strcmp(args[i], "-s") != 0) {
             if (builtin_check(args[i])) {
                 mx_printstr(args[i]);
                 mx_printstr(" not found\n");
                 error_code = 1;
             }
-            if (error_code == 0)
-                to_access(args[i]);
         }
         else if (mx_strcmp(args[1], "-a") == 0) {
             i++;
