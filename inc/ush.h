@@ -49,7 +49,7 @@
 extern char **environ;
 
 typedef struct s_processes {
-    int last_return;
+    int last_status;
     int num;
     int index;
     int sign;
@@ -218,13 +218,12 @@ int mx_detect_builds(char **args, t_ush *ush);
 char *mx_strpart(char *str, int index);
 char *mx_stream(int buf, char *line, int *x);
 void mx_free_node(t_history *node);
-int mx_detect_builds(char **args, t_ush *ush);
 
 int mx_detect_exp(char **proc, t_history *start_h, t_list **env_set);
 void mx_env_in_list(t_list **env_set, char *src);
 int mx_export(char **args, t_list **env_set);
 int mx_unset(char **args, t_list **env_set);
-void mx_fg(char **args, t_processes **processes);
+void mx_fg(char **args, t_processes *processes);
 int mx_printerror(int errnum, char *name, char *args, char *str);
 
 void mx_del_proc(t_processes **processes, int flag, t_processes **first);
@@ -241,5 +240,12 @@ int mx_env_print(void);
 
 void mx_del_pid_process(t_processes **processes, int pid);
 void mx_del_top_process(t_processes *processes);
+void mx_print_continue(char **mas_name, int index);
+void mx_print_suspended(char **mas_name);
+char *mx_arrstr_to_str(char **strs);
+char *mx_strj(char *s1, char *s2);
+bool mx_is_str_starts(char *string, char *start);
+void mx_segfault();
+char **mx_get_name(t_processes *processes, int num);
 
 #endif
