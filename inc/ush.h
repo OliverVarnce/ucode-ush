@@ -223,7 +223,7 @@ int mx_detect_exp(char **proc, t_history *start_h, t_list **env_set);
 void mx_env_in_list(t_list **env_set, char *src);
 int mx_export(char **args, t_list **env_set);
 int mx_unset(char **args, t_list **env_set);
-void mx_fg(char **args, t_processes *processes);
+int mx_fg(char **args, t_ush *ush);
 int mx_printerror(int errnum, char *name, char *args, char *str);
 
 void mx_del_proc(t_processes **processes, int flag, t_processes **first);
@@ -247,5 +247,6 @@ char *mx_strj(char *s1, char *s2);
 bool mx_is_str_starts(char *string, char *start);
 void mx_segfault();
 char **mx_get_name(t_processes *processes, int num);
+void mx_pop_front_proc(t_processes **head);
 
 #endif

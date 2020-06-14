@@ -59,7 +59,7 @@ static bool check_flag(char *args) {
     return true;
 }
 
-static int ch_proc(char **args, t_processes *processes, int i, char *flags) {
+static int ch_prococ(char **args, t_processes *processes, int i, char *flags) {
     int ind;
     t_processes *j = processes;
 
@@ -100,7 +100,7 @@ int mx_ush_processes(char **args, t_processes **processes) {
                 mx_strdel(&flags);
             return 0;
         }
-    res = ch_proc(args, j, i, flags);
+    res = ch_prococ(args, j, i, flags);
     if (flags != NULL)
         mx_strdel(&flags);
     return res;

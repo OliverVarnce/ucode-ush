@@ -26,7 +26,7 @@ int mx_builtin(char **args, t_ush *ush) {
         return mx_unset(args, &ush->env_set);
     }
     if (!mx_strcmp(args[0], "fg")) {
-        mx_fg(args, ush->processes);
+        return mx_fg(args, ush);
     }
     if (!mx_strcmp(args[0], "processes")) {
         return mx_ush_processes(args, &ush->processes);

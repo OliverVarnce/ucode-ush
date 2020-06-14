@@ -69,7 +69,8 @@ SRC = $(addprefix $(SRC_DIR)/,\
       utils/mx_strcmp_null.c \
       utils/mx_name_search.c \
       utils/mx_opencheck.c \
-      utils/mx_empty_proc.c)
+      utils/mx_empty_proc.c \
+      utils/mx_pop_front_proc.c)
 
 
 OBJ = mx_add_proc.o \
@@ -129,7 +130,8 @@ OBJ = mx_add_proc.o \
       mx_strcmp_null.o \
       mx_name_search.o \
       mx_opencheck.o \
-      mx_empty_proc.o
+      mx_empty_proc.o \
+      mx_pop_front_proc.o
 
 CC = clang
 

@@ -6,6 +6,6 @@ t_processes *mx_create_proc(char **data, int num, pid_t pid, char *pwd) {
     t->pwd = mx_cut_str_forproc(pwd);
     t->num = num;
     t->pid = pid;
-    t->next = NULL;
+
     return t;
 }
