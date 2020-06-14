@@ -17,7 +17,8 @@ static void mx_print_path(char *args) {
     mx_del_strarr(&m);
 }
 
-static void print_builtin_msg(char *args, int *err_code, int flag_a, int *f_pass) {
+static void print_builtin_msg(char *args, int *err_code, int flag_a,
+        int *f_pass) {
     char *built[] = {"cd", "pwd", "exit", "which", "env", "fg",
         "processes", "export", "unset", "false", "true", NULL};
     int built_in = 0;
@@ -32,7 +33,7 @@ static void print_builtin_msg(char *args, int *err_code, int flag_a, int *f_pass
                 *err_code = 0;
         }
     }
-    if (built_in == 0) {
+    if (!built_in) {
         printf("%s not found\n", args);
         *err_code = 1;
     }
@@ -42,8 +43,8 @@ static void print_builtin_msg(char *args, int *err_code, int flag_a, int *f_pass
 int mx_which(char **args) {
     int err_code = 1;
     int flag_a = 0;
-    int i = 1;
     int f_pass = 1;
+    int i = 1;
 
     if (!args[i])
         return 1;
