@@ -6,13 +6,9 @@ static void mx_print_path(char *args) {
     char **m = NULL;
     
     m = mx_strsplit(path, ':');
-    for (int i = 0; m[i]; i++) {
-        tmp = mx_strjoin(m[i], "/");
-        tmp = mx_delit_fre(tmp, args);
-        if (i == 3)
-            printf("%s\n", tmp);
-        mx_strdel(&tmp);
-    }
+    tmp = mx_strjoin(m[3], "/");
+    tmp = mx_delit_fre(tmp, args);
+    printf("%s\n", tmp);
     mx_strdel(&tmp);
     mx_del_strarr(&m);
 }
