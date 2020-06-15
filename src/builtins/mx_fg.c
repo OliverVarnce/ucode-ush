@@ -35,8 +35,9 @@ static t_processes* get_process(int n, char *str, t_processes *processes) {
 
 static void fg_wait(int status, pid_t ch_proc, t_processes *processes, t_ush *ush) {
     if (MX_WIFSIG(status)) {
-        if (MX_WTERMSIG(status) == SIGSEGV)
+        if (MX_WTERMSIG(status) == SIGSEGV) {
             mx_segfault();
+        }
         else if (MX_WTERMSIG(status) == SIGINT) {
             mx_del_pid_process(&processes, ch_proc);
             ush->last_return = 130;
@@ -98,9 +99,9 @@ void mx_del_pid_process(t_processes **processes, int pid) {
     t_processes *tmp1 = *processes;
     t_processes *tmp2 = *processes;
 
-
     if (processes) {
         if (tmp->pid == pid) {
+            printf("=============================tmp:%u\n", tmp->pid);
             mx_del_top_process(*processes);
             return;
         }
@@ -188,6 +189,7 @@ int mx_fg(char **args, t_ush *ush) {
 
     if (procs->data) {
         if (fg_continue(args, procs) == 0) {
+            printf("=========================================\n");
             ch_proc = waitpid(-1, &status, WUNTRACED);
             if (!MX_WIFEXIT(status)){
 
