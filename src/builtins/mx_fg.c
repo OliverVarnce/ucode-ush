@@ -11,13 +11,13 @@ static bool mx_is_number_fg(char *str) {
     return true;
 }
 
-static t_processes* get_process(int n, char *str, t_processes *processes) {
-    t_processes *tmp = processes;
+static t_processes* get_process(int n, char *str, t_ush *ush) {
+    t_processes *tmp = (t_processes*)ush->processes;
 
-    if (n != -1) {
-        while (tmp) {
-            if (((t_processes*)tmp->data)->index == n)
-                return ((t_processes*)tmp->data);
+    if (n > -1) {
+        while (tmp->next != NULL) {
+            if (tmp->index == n)
+                return tmp;
             tmp = tmp->next;
         }
         fprintf(stderr, "fg: job not found: %s\n", str);
@@ -33,35 +33,37 @@ static t_processes* get_process(int n, char *str, t_processes *processes) {
     return 0;
 }
 
-static void fg_wait(int status, pid_t ch_proc, t_processes *processes, t_ush *ush) {
+static void fg_wait(int status, pid_t ch_proc, t_ush *ush) {
     if (MX_WIFSIG(status)) {
         if (MX_WTERMSIG(status) == SIGSEGV) {
             mx_segfault();
         }
         else if (MX_WTERMSIG(status) == SIGINT) {
-            mx_del_pid_process(&processes, ch_proc);
+            mx_del_pid_process(ush, ch_proc);
             ush->last_return = 130;
         }
         else {
-            char **str = mx_get_name(processes, ch_proc);
+            char **str = mx_get_name(ush, ch_proc);
             mx_print_suspended(str);
+            printf("-----------------------**************-------------------------\n");
         }
     }
 }
 
-static int fg_continue(char **arg, t_processes *processes) {
-    t_processes *proc = (t_processes*)processes;
+static int fg_continue(char **arg, t_ush *ush) {
+    t_processes *proc = (t_processes*)ush->processes->data;
     int i = 0;
+
     if (arg[1] == 0) {
         kill(proc->pid, SIGCONT);
         return 0;
     }
     i = (arg[1][0] == '%') ? 1 : 0;
     if (mx_is_number_fg(arg[1])) {
-        proc = get_process(mx_atoi(&arg[1][i]), arg[1], processes);
+        proc = get_process(mx_atoi(&arg[1][i]), arg[1], ush);
     }
     else {
-        proc = get_process(-1, &arg[1][i], processes);
+        proc = get_process(-1, &arg[1][i], ush);
 
     }
     if (proc == 0) {
@@ -72,8 +74,8 @@ static int fg_continue(char **arg, t_processes *processes) {
     return 0;
 }
 
-char **mx_get_name(t_processes *processes, int num) {
-    t_processes *head_pr = processes;
+char **mx_get_name(t_ush *ush, int num) {
+    t_processes *head_pr = ush->processes;
 
     while (head_pr) {
         if (head_pr->pid == num) {
@@ -94,15 +96,14 @@ void mx_del_top_process(t_processes *processes) {
     mx_pop_front_proc(&processes);
 }
 
-void mx_del_pid_process(t_processes **processes, int pid) {
-    t_processes *tmp = *processes;
-    t_processes *tmp1 = *processes;
-    t_processes *tmp2 = *processes;
+void mx_del_pid_process(t_ush *ush, int pid) {
+    t_processes *tmp = ush->processes;
+    t_processes *tmp1 = ush->processes;
+    t_processes *tmp2 = ush->processes;
 
-    if (processes) {
+    if (ush->processes) {
         if (tmp->pid == pid) {
-            printf("=============================tmp:%u\n", tmp->pid);
-            mx_del_top_process(*processes);
+            mx_del_top_process(ush->processes);
             return;
         }
         while (tmp->next) {
@@ -187,17 +188,15 @@ int mx_fg(char **args, t_ush *ush) {
     int status = 0;
     t_processes *procs = ush->processes;
 
-    if (procs->data) {
-        if (fg_continue(args, procs) == 0) {
-            printf("=========================================\n");
+    if (procs) {
+        if (fg_continue(args, ush) == 0) {
             ch_proc = waitpid(-1, &status, WUNTRACED);
-            if (!MX_WIFEXIT(status)){
-
-                fg_wait(status, ch_proc, procs , ush);
+            if (MX_WIFEXIT(status)){
+                fg_wait(status, ch_proc, ush);
             }
             else {
-                mx_del_pid_process(&procs, ch_proc);
-                procs->last_status = MX_EXSTATUS(status);
+                mx_del_pid_process(ush, ch_proc);
+                ush->last_return = MX_EXSTATUS(status);
             }
         }
     }

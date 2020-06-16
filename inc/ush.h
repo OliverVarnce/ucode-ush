@@ -43,13 +43,13 @@
 
 #define MX_ISLNK(m)      (((m) & MX_IFMT) == MX_IFLNK)                  
 #define MX_IFMT          0170000    
-#define MX_IFLNK         0120000         /* [XSI] symbolic link */
+#define MX_IFLNK         0120000         /* symbolic link */
 
 #define CANON_OPTS 228
+
 extern char **environ;
 
 typedef struct s_processes {
-    int last_status;
     int num;
     int index;
     int sign;
@@ -238,7 +238,7 @@ int mx_strcmp_null(const char *s1, const char *s2);
 int mx_print_history(t_ush *ush);
 int mx_env_print(void);
 
-void mx_del_pid_process(t_processes **processes, int pid);
+void mx_del_pid_process(t_ush *ush, int pid);
 void mx_del_top_process(t_processes *processes);
 void mx_print_continue(char **mas_name, int index);
 void mx_print_suspended(char **mas_name);
@@ -246,7 +246,7 @@ char *mx_arrstr_to_str(char **strs);
 char *mx_strj(char *s1, char *s2);
 bool mx_is_str_starts(char *string, char *start);
 void mx_segfault();
-char **mx_get_name(t_processes *processes, int num);
+char **mx_get_name(t_ush *ush, int num);
 void mx_pop_front_proc(t_processes **head);
 
 #endif

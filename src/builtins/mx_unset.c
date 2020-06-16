@@ -12,7 +12,7 @@ static void unset_var(t_list **env_set, int count, t_list **b) {
         }
         else
             mx_pop_frontf(env_set);
-        return ;
+        return;
     }
     for (int i = 0; i < count - 1; i++)
         front = front->next;

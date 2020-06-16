@@ -8,8 +8,10 @@ static char **env_cpy(char **environ) {
         len++;
     res = (char **)malloc(sizeof(char *) * (len + 1));
     res[len] = NULL;
-    for (int i = 0; environ[i]; i++) 
+    for (int i = 0; environ[i]; i++) {
         res[i] = mx_strdup(environ[i]);
+        printf("=================%s\n", res[i]);
+    }
     return res;
 }
 
