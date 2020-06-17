@@ -239,7 +239,7 @@ int mx_print_history(t_ush *ush);
 int mx_env_print(void);
 
 void mx_del_pid_process(t_ush *ush, int pid);
-void mx_del_top_process(t_processes *processes);
+void mx_del_top_process(t_ush *ush);
 void mx_print_continue(char **mas_name, int index);
 void mx_print_suspended(char **mas_name);
 char *mx_arrstr_to_str(char **strs);

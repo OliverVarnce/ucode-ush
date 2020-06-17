@@ -11,10 +11,24 @@ static bool mx_is_number_fg(char *str) {
     return true;
 }
 
-static t_processes* get_process(int n, char *str, t_ush *ush) {
-    t_processes *tmp = (t_processes*)ush->processes;
+void mx_printpros(t_processes *tmp) {
+    while (tmp) {
+        printf("********************************************************\n");
+        printf("DATA: ");
+        for (int i = 0; tmp->data[i]; i++)
+            printf("%s ", tmp->data[i]);
+        printf("\n");
+        printf("PWD: ");
+        printf("%s\n", tmp->pwd);
+        tmp = tmp->next;
+        printf("********************************************************\n");
+    }
+}
 
-    if (n > -1) {
+static t_processes* get_process(int n, char *str, t_ush *ush) {
+    t_processes *tmp = ush->processes;
+    mx_printpros(tmp);
+    if (n != -1) {
         while (tmp->next != NULL) {
             if (tmp->index == n)
                 return tmp;
@@ -45,7 +59,6 @@ static void fg_wait(int status, pid_t ch_proc, t_ush *ush) {
         else {
             char **str = mx_get_name(ush, ch_proc);
             mx_print_suspended(str);
-            printf("-----------------------**************-------------------------\n");
         }
     }
 }
@@ -86,34 +99,32 @@ char **mx_get_name(t_ush *ush, int num) {
     return 0;
 }
 
-void mx_del_top_process(t_processes *processes) {
-    if (!processes) {
+void mx_del_top_process(t_ush *ush) {
+    if (!ush->processes) {
         return;
     }
-    if (processes->data != NULL)
-        mx_del_strarr(&(processes->data));
-    mx_strdel(&(processes->pwd));
-    mx_pop_front_proc(&processes);
+    if (ush->processes->data != NULL)
+        mx_del_strarr(&(ush->processes->data));
+    mx_strdel(&(ush->processes->pwd));
+    mx_pop_front_proc(&ush->processes);
 }
 
 void mx_del_pid_process(t_ush *ush, int pid) {
     t_processes *tmp = ush->processes;
-    t_processes *tmp1 = ush->processes;
     t_processes *tmp2 = ush->processes;
 
     if (ush->processes) {
-        if (tmp->pid == pid) {
-            mx_del_top_process(ush->processes);
+        if (((t_processes*)tmp->data)->pid == pid) {
+            mx_del_top_process(ush);
             return;
         }
         while (tmp->next) {
-            if (tmp->next->pid == pid) {
-                tmp1 = tmp;
-                tmp2 = tmp->next->next;
-                mx_del_strarr(&tmp->next->data);
-                mx_strdel(&tmp->next->pwd);
-                free(tmp->next);
-                tmp1 = tmp2;
+            if (((t_processes*)tmp->next->data)->pid == pid) {
+                tmp2 = tmp->next;
+                tmp->next = tmp->next->next;
+                mx_del_strarr(&tmp2->data);
+                free(tmp2->data);
+                free(tmp2);
                 return;
             }
             tmp = tmp->next;
@@ -188,7 +199,8 @@ int mx_fg(char **args, t_ush *ush) {
     int status = 0;
     t_processes *procs = ush->processes;
 
-    if (procs) {
+    if (procs->data != NULL) {
+        mx_printpros(procs);
         if (fg_continue(args, ush) == 0) {
             ch_proc = waitpid(-1, &status, WUNTRACED);
             if (MX_WIFEXIT(status)){

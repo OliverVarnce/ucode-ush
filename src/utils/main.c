@@ -37,19 +37,6 @@ static void pipe_call(t_ush *ush) {
     mx_parse(line, ush);
 }
 
-//static void set_slvlup() {
-//    char *s;
-//
-//    if (getppid() == 1)
-//        return;
-//    if (getenv("SHLVL")) {
-//        s = mx_itoa((mx_atoi(getenv("SHLVL"))) + 1);
-//        setenv("SHLVL", s, 1);
-//        free(s);
-//    }
-//
-//}
-
 void mx_mysetenv() {
     struct passwd *pw = getpwuid(getuid());
     char *pwd = getcwd(NULL, 0);
