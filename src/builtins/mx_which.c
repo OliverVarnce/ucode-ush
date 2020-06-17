@@ -1,12 +1,12 @@
 #include "ush.h"
 
-static void mx_print_path(char *args) {
+static void mx_print_path(char *args, int num) {
     char *tmp = NULL;
     char *path = getenv("PATH");
     char **m = NULL;
     
     m = mx_strsplit(path, ':');
-    tmp = mx_strjoin(m[2], "/");
+    tmp = mx_strjoin(m[num], "/");
     tmp = mx_delit_fre(tmp, args);
     printf("%s\n", tmp);
     mx_strdel(&tmp);
@@ -14,21 +14,40 @@ static void mx_print_path(char *args) {
 }
 
 static void print_builtin_msg(char *args, int *err_code, int flag_a, int flag_s,
-        int *f_pass) {
+                              int *f_pass) {
     char *built[] = {"cd", "pwd", "exit", "which", "env", "fg",
         "jobs", "export", "unset", "false", "true", NULL};
     int built_in = 0;
 
     for (int i = 0; built[i]; i++) {
         if (!mx_strcmp(built[i], args)) {
-            if (flag_a && i == 7)
-                printf("%s: export: shell reserved word\n", args);
-            if (i != 4)
+            if (i == 1) {
                 printf("%s: shell built-in command\n", args);
-            if (flag_a && i != 7)
-                mx_print_path(args);
-            if (flag_s))
-                mx_print_path(args);
+                if (flag_a)
+                    mx_print_path(args, 3);
+            }
+            else if (i == 2 || i == 8)
+                    printf("%s: shell built-in command\n", args);
+            else if (i == 4)
+                mx_print_path(args, 2);
+            else if (i == 7) {
+                if (flag_a) {
+                    printf("%s: shell reserved word\n", args);
+                    printf("%s: shell built-in command\n", args);
+                }
+                else
+                    printf("%s: shell reserved word\n", args);
+            }
+            else {
+                if (flag_a) {
+                    printf("%s: shell built-in command\n", args);
+                    mx_print_path(args, 2);
+                }
+                else if (flag_s)
+                    printf("%s: shell built-in command\n", args);
+                else
+                    printf("%s: shell built-in command\n", args);
+            }
             built_in = 1;
             if (*f_pass == 1)
                 *err_code = 0;
