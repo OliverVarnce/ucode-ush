@@ -11,23 +11,38 @@ static bool mx_is_number_fg(char *str) {
     return true;
 }
 
-//void mx_printpros(t_processes *tmp) {
-//    while (tmp) {
-//        printf("********************************************************\n");
-//        printf("DATA: ");
-//        for (int i = 0; tmp->data[i]; i++)
-//            printf("%s ", tmp->data[i]);
-//        printf("\n");
-//        printf("PWD: ");
-//        printf("%s\n", tmp->pwd);
-//        tmp = tmp->next;
-//        printf("********************************************************\n");
-//    }
-//}
+void mx_printpros(t_processes *tmp) {
+    if (tmp) {
+        while (tmp) {
+            printf("********************************************************\n");
+            if (tmp->data) {
+                printf("DATA: ");
+                for (int i = 0; tmp->data[i]; i++)
+                    printf("%s ", tmp->data[i]);
+                printf("\n");
+            }
+            if (tmp->pwd) {
+                printf("PWD: ");
+                printf("%s\n", tmp->pwd);
+            }
+            if (tmp->index) {
+                printf("INDEX: ");
+                printf("%d\n", tmp->index);
+            }
+            if (tmp->pid) {
+                printf("PID: ");
+                printf("%d\n", tmp->pid);
+            }
+
+            tmp = tmp->next;
+            printf("********************************************************\n");
+        }
+    }
+}
 
 static t_processes* get_process(int n, char *str, t_ush *ush) {
     t_processes *tmp = ush->processes;
-    //mx_printpros(tmp);
+    mx_printpros(tmp);
     if (n != -1) {
         while (tmp->next != NULL) {
             if (tmp->index == n)
@@ -39,7 +54,7 @@ static t_processes* get_process(int n, char *str, t_ush *ush) {
     else {
         while (tmp) {
             if (mx_is_str_starts(tmp->data[0], str))
-                return ((t_processes*)tmp->data);
+                return tmp;
             tmp = tmp->next;
         }
         fprintf(stderr, "fg: job not found: %s\n", str);
@@ -64,7 +79,7 @@ static void fg_wait(int status, pid_t ch_proc, t_ush *ush) {
 }
 
 static int fg_continue(char **arg, t_ush *ush) {
-    t_processes *proc = (t_processes*)ush->processes->data;
+    t_processes *proc = ush->processes;
     int i = 0;
 
     if (arg[1] == 0) {
@@ -200,7 +215,7 @@ int mx_fg(char **args, t_ush *ush) {
     t_processes *procs = ush->processes;
 
     if (procs->data != NULL) {
-        //mx_printpros(procs);
+        mx_printpros(procs);
         if (fg_continue(args, ush) == 0) {
             ch_proc = waitpid(-1, &status, WUNTRACED);
             if (MX_WIFEXIT(status)){
