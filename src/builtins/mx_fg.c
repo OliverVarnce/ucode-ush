@@ -11,23 +11,23 @@ static bool mx_is_number_fg(char *str) {
     return true;
 }
 
-void mx_printpros(t_processes *tmp) {
-    while (tmp) {
-        printf("********************************************************\n");
-        printf("DATA: ");
-        for (int i = 0; tmp->data[i]; i++)
-            printf("%s ", tmp->data[i]);
-        printf("\n");
-        printf("PWD: ");
-        printf("%s\n", tmp->pwd);
-        tmp = tmp->next;
-        printf("********************************************************\n");
-    }
-}
+//void mx_printpros(t_processes *tmp) {
+//    while (tmp) {
+//        printf("********************************************************\n");
+//        printf("DATA: ");
+//        for (int i = 0; tmp->data[i]; i++)
+//            printf("%s ", tmp->data[i]);
+//        printf("\n");
+//        printf("PWD: ");
+//        printf("%s\n", tmp->pwd);
+//        tmp = tmp->next;
+//        printf("********************************************************\n");
+//    }
+//}
 
 static t_processes* get_process(int n, char *str, t_ush *ush) {
     t_processes *tmp = ush->processes;
-    mx_printpros(tmp);
+    //mx_printpros(tmp);
     if (n != -1) {
         while (tmp->next != NULL) {
             if (tmp->index == n)
@@ -114,12 +114,12 @@ void mx_del_pid_process(t_ush *ush, int pid) {
     t_processes *tmp2 = ush->processes;
 
     if (ush->processes) {
-        if (((t_processes*)tmp->data)->pid == pid) {
+        if (tmp->pid == pid) {
             mx_del_top_process(ush);
             return;
         }
         while (tmp->next) {
-            if (((t_processes*)tmp->next->data)->pid == pid) {
+            if (tmp->pid == pid) {
                 tmp2 = tmp->next;
                 tmp->next = tmp->next->next;
                 mx_del_strarr(&tmp2->data);
@@ -200,7 +200,7 @@ int mx_fg(char **args, t_ush *ush) {
     t_processes *procs = ush->processes;
 
     if (procs->data != NULL) {
-        mx_printpros(procs);
+        //mx_printpros(procs);
         if (fg_continue(args, ush) == 0) {
             ch_proc = waitpid(-1, &status, WUNTRACED);
             if (MX_WIFEXIT(status)){

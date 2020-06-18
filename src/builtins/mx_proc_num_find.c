@@ -18,7 +18,6 @@ static bool del_part(t_processes **processes, int num) {
 bool mx_proc_num_find(char *args, t_processes **processes) {
     char *tmp = mx_cut_str_forproc(args);
 
-    printf("%s\n", tmp);
     int num = mx_atoi(tmp);
     t_processes *j = *processes;
     bool flag = true;
@@ -31,6 +30,6 @@ bool mx_proc_num_find(char *args, t_processes **processes) {
         flag = false;
     mx_strdel(&tmp);
     if (flag == false)
-        mx_printerror(0, "fg", args, "proc");
+        mx_printerror(0, "fg", args, "job");
     return flag;
 }

@@ -7,7 +7,7 @@ static void start_loop(t_ush *ush) {
 
    for (; CANON_OPTS;) {
         mx_enable_canon();
-        mx_printstr("u$h> ");
+        mx_printstr(MX_USH);
         line = mx_read_stream(ush->hist);
     //char *line = strdup("env -i emacs");
         mx_printstr("\n");

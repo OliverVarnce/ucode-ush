@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
+#include <regex.h>
 #include <sys/xattr.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
@@ -46,6 +47,8 @@
 #define MX_IFLNK         0120000         /* symbolic link */
 
 #define CANON_OPTS 228
+
+#define MX_USH "\x1b[38;5;68mu$h> \x8\x1b[38;5;243m"
 
 extern char **environ;
 
@@ -89,6 +92,8 @@ typedef struct s_ush {
     struct termios savetty;
     bool env;
 }              t_ush;
+
+
 
 #define MX_FUNC_SYMBOLS "\"\'$`(){}\\;"
 #define MX_SLASH_SPEC_DBLQ "`$\"\\"
@@ -185,7 +190,7 @@ char *mx_get_subst_outputs(char *str, t_ush *ush);
 t_range *mx_is_inside_of(int i, enum e_quote type, t_frmt_lst **arr);
 int mx_handle_substitutions(char **str, t_frmt_lst **arr, t_ush *ush);
 int mx_tilde_expansion(char **argv);
-int mx_echo(char **argv);
+int mx_echo(char **argv, t_ush *ush);
 char mx_getopt(int argc, char **argv, char *optstring, int *optind);
 void mx_enable_canon(void);
 void mx_disable_canon(void);
@@ -248,5 +253,8 @@ bool mx_is_str_starts(char *string, char *start);
 void mx_segfault();
 char **mx_get_name(t_ush *ush, int num);
 void mx_pop_front_proc(t_processes **head);
+
+int mx_0_and_x(char *str, int *i);
+bool mx_reg(char *str, char *regular);
 
 #endif

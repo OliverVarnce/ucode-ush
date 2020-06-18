@@ -2,7 +2,7 @@
 
 int mx_builtin(char **args, t_ush *ush) {
     if (!mx_strcmp(args[0], "echo")) {
-        return mx_echo(args);
+        return mx_echo(args, ush);
     }
     if (!mx_strcmp(args[0], "cd")) {
         return mx_cd(args);
