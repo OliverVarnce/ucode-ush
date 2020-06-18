@@ -255,7 +255,7 @@ void mx_segfault();
 char **mx_get_name(t_ush *ush, int num);
 void mx_pop_front_proc(t_processes **head);
 
-int mx_0_and_x(char *str, int *i);
+int mx_xo(char *str, int *i);
 bool mx_regexp(char *str, char *regular);
 
 #endif

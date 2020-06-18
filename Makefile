@@ -64,13 +64,15 @@ SRC = $(addprefix $(SRC_DIR)/,\
       utils/mx_join.c \
       utils/mx_delit_fre.c \
       utils/mx_getopt.c \
+      utils/mx_regexp.c \
       utils/mx_setup_term.c \
       utils/mx_strpart.c \
       utils/mx_strcmp_null.c \
       utils/mx_name_search.c \
       utils/mx_opencheck.c \
       utils/mx_empty_proc.c \
-      utils/mx_pop_front_proc.c)
+      utils/mx_pop_front_proc.c \
+      utils/mx_xo.c)
 
 
 OBJ = mx_add_proc.o \
@@ -125,13 +127,15 @@ OBJ = mx_add_proc.o \
       mx_join.o \
       mx_delit_fre.o \
       mx_getopt.o \
+      mx_regexp.o \
       mx_setup_term.o \
       mx_strpart.o \
       mx_strcmp_null.o \
       mx_name_search.o \
       mx_opencheck.o \
       mx_empty_proc.o \
-      mx_pop_front_proc.o
+      mx_pop_front_proc.o \
+      mx_xo.o
 
 CC = clang
 
