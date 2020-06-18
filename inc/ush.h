@@ -49,6 +49,7 @@
 #define CANON_OPTS 228
 
 #define MX_USH "\x1b[38;5;68mu$h> \x8\x1b[38;5;243m"
+#define MX_REGULAR "^(x[0-9a-fA-F]{2}.*)|(0[0-7]{2,3}.*)$"
 
 extern char **environ;
 
@@ -255,6 +256,6 @@ char **mx_get_name(t_ush *ush, int num);
 void mx_pop_front_proc(t_processes **head);
 
 int mx_0_and_x(char *str, int *i);
-bool mx_reg(char *str, char *regular);
+bool mx_regexp(char *str, char *regular);
 
 #endif
